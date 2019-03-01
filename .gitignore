@@ -27,6 +27,7 @@ game/*.booproj
 ============
 OS generated
 ============
+game/.*
 game/.DS_Store
 game/.DS_Store?
 game/._*
