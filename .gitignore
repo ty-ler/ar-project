@@ -1,2 +1,4 @@
 webserver/node_modules
 game/Assets/Wikitude
+game/Assets/Plugins/iOS/Wikitude.*
+game/Temp
