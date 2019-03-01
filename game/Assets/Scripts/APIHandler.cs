@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Net;
 using System.IO;
 using UnityEngine;
 
@@ -14,15 +13,28 @@ public class APIHandler: MonoBehaviour
     // This code will be run before anything else.
     void Awake()
     {
-        endpoint = "localhost:1337/api";
+        endpoint = "http://localhost:1337/api";
         access_token = LoadAcessToken();
-        
+
+        string call = endpoint + "/problems?access_token=" + access_token;
+
+
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(call);
+        request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+
+        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+        using (Stream stream = response.GetResponseStream())
+        using (StreamReader reader = new StreamReader(stream))
+        {
+            Debug.Log(reader.ReadToEnd());
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+           
     }
 
     // Update is called once per frame
