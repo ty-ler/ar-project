@@ -1,4 +1,36 @@
 webserver/node_modules
 game/Assets/Wikitude
 game/Assets/Plugins/iOS/Wikitude.*
-game/Temp
+game/Assets/Plugins/iOS/WikitudeSDK.*
+
+=============== 
+Unity generated
+===============
+game/Temp/
+game/Library/
+
+=====================================
+Visual Studio / MonoDevelop generated
+=====================================
+game/ExportedObj/
+game/obj/
+game/*.svd
+game/*.userprefs
+game/*.csproj
+game/*.pidb
+game/*.suo
+game/*.sln
+game/*.user
+game/*.unityproj
+game/*.booproj
+
+============
+OS generated
+============
+game/.DS_Store
+game/.DS_Store?
+game/._*
+game/.Spotlight-V100
+game/.Trashes
+game/ehthumbs.db
+game/Thumbs.db
