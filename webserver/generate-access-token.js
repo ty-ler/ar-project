@@ -6,4 +6,3 @@ var auth = {
 };
 
 fs.writeFileSync("./auth.json", JSON.stringify(auth));
-
