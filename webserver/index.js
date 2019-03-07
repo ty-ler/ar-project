@@ -41,7 +41,7 @@ app.get("/api/student_accounts", (req, res) => {
   const req_access_token = req.query.access_token;
   const username = req.query.user;
   const password = req.query.pass;
-  console.log(username);
+  
 
 
   
@@ -57,23 +57,16 @@ connection.query('SELECT * FROM student_accounts WHERE Username = ?',[username],
     // console.log('The solution is: ', results);
     if(results.length >0){
       if(results[0].Password == password){
-        res.send({
-          "code":200,
-          "success":"login sucessful"
-            });
+        res.sendStatus(200); //success
+        
       }
       else{
-        res.send({
-          "code":204,
-          "success":"Username and password does not match"
-            });
+        res.sendStatus(203);
+         //username and password does not match
       }
     }
     else{
-      res.send({
-        "code":204,
-        "success":"username does not exits"
-          });
+      res.sendStatus(204);  //username doesnt exist     
     }
   }
   });
