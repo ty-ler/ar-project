@@ -1,6 +1,8 @@
 ﻿<Properties StartupConfiguration="{1AF7E356-2D58-7119-FE6C-C1ED31A62E64}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/APIHandler.cs">
     <Files>
+      <File FileName="Assets/Scripts/MainMenuController.cs" Line="8" Column="2" />
+      <File FileName="Assets/Scripts/LoginHandler.cs" Line="29" Column="1" />
       <File FileName="Assets/Scripts/APIHandler.cs" Line="16" Column="48" />
     </Files>
   </MonoDevelop.Ide.Workbench>

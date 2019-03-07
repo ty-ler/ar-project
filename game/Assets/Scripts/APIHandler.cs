@@ -11,7 +11,7 @@ public class APIHandler: MonoBehaviour
 
     // Awake is the first method called in the lifecylce of a script.
     // This code will be run before anything else.
-    void Awake()
+    public void Awake()
     {
         endpoint = "http://localhost:1337/api";
         access_token = LoadAcessToken();
@@ -28,13 +28,36 @@ public class APIHandler: MonoBehaviour
         using (StreamReader reader = new StreamReader(stream))
         {
             Debug.Log(reader.ReadToEnd());
+           
+
+
+        }
+    }
+
+    public int Login(string username, string password)
+    {
+
+
+        endpoint = "http://localhost:1337/api";
+        access_token = LoadAcessToken();
+    
+        string call = endpoint + "/student_accounts?access_token=" + access_token + "&user=" + username + "&pass=" +password ;
+
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(call);
+        request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+        using (Stream stream = response.GetResponseStream())
+        using (StreamReader reader = new StreamReader(stream))
+        {
+            Debug.Log(reader.ReadToEnd());
+            return (int)response.StatusCode;
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-           
+
     }
 
     // Update is called once per frame

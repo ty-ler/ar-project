@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -22,13 +23,18 @@ public class MainMenuController : MonoBehaviour
         
     }
 
-    void LoadLoginScene()
+    public void LoadLoginScene()
     {
         SceneManager.LoadScene("login");
     }
 
-    void LoadRegisterScene()
+    public void LoadRegisterScene()
     {
         SceneManager.LoadScene("register");
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("main_menu");
     }
 }
