@@ -29,11 +29,11 @@ game/.vs/game/xs/sqlite3/storage.ide-wal
 ============
 OS generated
 ============
-game/.*
-game/.DS_Store
-game/.DS_Store?
-game/._*
-game/.Spotlight-V100
-game/.Trashes
-game/ehthumbs.db
-game/Thumbs.db
+.*
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
