@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +14,14 @@ public class LoginHandler : MonoBehaviour
 
     void Start()
     {
-       LButton.onClick.AddListener(LoginProcess);
+        EmailField.onValueChanged.AddListener(ClearWarning);
+        PasswordField.onValueChanged.AddListener(ClearWarning);
+        LButton.onClick.AddListener(LoginProcess);
+    }
+
+    private void ClearWarning(string arg0)
+    {
+        LoginNotification.text = " ";
     }
 
     // Update is called once per frame
@@ -30,17 +38,21 @@ public class LoginHandler : MonoBehaviour
         if (status == 200)
         {
             main.LoadMainMenu();
-            return;
+           
+        }
+        if (status == 203)
+        {
+            LoginNotification.text = "Username and password are incorrect";
+
 
         }
         if (status == 204)
         {
-            LoginNotification.text = "Username and password does not match";
+            LoginNotification.text = "The entered username does not exist";
         }
 
     }
-
-
+  
 }
 
 
