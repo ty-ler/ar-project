@@ -30,7 +30,7 @@ public class MainMenuController : MonoBehaviour
 
     public void LoadRegisterScene()
     {
-        SceneManager.LoadScene("register");
+        SceneManager.LoadScene("sign_up");
     }
 
     public void LoadMainMenu()

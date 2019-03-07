@@ -1,7 +1,7 @@
 webserver/node_modules
 game/Assets/Wikitude
 game/Assets/Plugins/iOS/Wikitude.*
-game/Assets/Plugins/iOS/WikitudeSDK.*
+game/Assets/Plugins/iOS/WikitudeSDK.* 
 
 =============== 
 Unity generated
@@ -24,6 +24,7 @@ game/*.sln
 game/*.user
 game/*.unityproj
 game/*.booproj
+game/.vs/game/xs/sqlite3/storage.ide-wal
 
 ============
 OS generated
