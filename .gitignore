@@ -2,6 +2,7 @@ webserver/node_modules
 game/Assets/Wikitude
 game/Assets/Plugins/iOS/Wikitude.*
 game/Assets/Plugins/iOS/WikitudeSDK.*
+game/.vs/game/xs/sqlite3/storage.ide-wal 
 
 =============== 
 Unity generated
