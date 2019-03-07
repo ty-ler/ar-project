@@ -1,10 +1,24 @@
 ﻿<Properties StartupConfiguration="{1AF7E356-2D58-7119-FE6C-C1ED31A62E64}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/APIHandler.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MainMenuController.cs">
     <Files>
-      <File FileName="Assets/Scripts/MainMenuController.cs" Line="8" Column="2" />
-      <File FileName="Assets/Scripts/LoginHandler.cs" Line="29" Column="1" />
-      <File FileName="Assets/Scripts/APIHandler.cs" Line="16" Column="48" />
+      <File FileName="Assets/Scripts/MainMenuController.cs" Line="33" Column="9" />
+      <File FileName="Assets/Scripts/LoginHandler.cs" Line="4" Column="22" />
+      <File FileName="Assets/Scripts/APIHandler.cs" Line="73" Column="45" />
+      <File FileName="Assets/Scripts/SignupHandler.cs" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="game" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="MainMenuController.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
