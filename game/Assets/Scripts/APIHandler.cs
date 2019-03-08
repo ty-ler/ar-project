@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.IO;
 using UnityEngine;
-
+using System.Text;
 
 public class APIHandler: MonoBehaviour
 {
@@ -28,16 +28,11 @@ public class APIHandler: MonoBehaviour
         using (StreamReader reader = new StreamReader(stream))
         {
             Debug.Log(reader.ReadToEnd());
-           
-
-
         }
     }
 
     public int Login(string username, string password)
     {
-
-
         endpoint = "http://localhost:1337/api";
         access_token = LoadAcessToken();
     
@@ -49,6 +44,32 @@ public class APIHandler: MonoBehaviour
         using (Stream stream = response.GetResponseStream())
         using (StreamReader reader = new StreamReader(stream))
         {
+            Debug.Log(reader.ReadToEnd());
+            return (int)response.StatusCode;
+        }
+    }
+    public int SignUp(string studenID,string fullname, string username,string password, string email,string teacherID)
+    {
+        endpoint = "http://localhost:1337/api";
+        access_token = LoadAcessToken();
+
+        string call = endpoint + "/student_accounts?access_token=" + access_token;
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(call);
+        request.Method = "POST";
+        string postData = "&studentID=" + studenID + "&Password=" + password 
+                          + "&Username=" + username + "&Password=" + password
+                          + "&Email=" + email + "&TeacherID=" + teacherID;
+        byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+        request.ContentType = "application/x-www-form-urlencoded";
+        request.ContentLength = byteArray.Length;
+        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        Stream dataStream = request.GetRequestStream();
+        // Write the data to the request stream.  
+        dataStream.Write(byteArray, 0, byteArray.Length);
+        // Close the Stream object.  
+        dataStream.Close();
+        dataStream = response.GetResponseStream();
+        using (StreamReader reader = new StreamReader(dataStream)) {
             Debug.Log(reader.ReadToEnd());
             return (int)response.StatusCode;
         }

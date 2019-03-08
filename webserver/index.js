@@ -2,6 +2,9 @@ const express = require("express");
 const auth = require("./auth.json");
 const mysql = require("mysql");
 const app = express();
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 
 const db_name = "vrapp";
@@ -30,7 +33,6 @@ app.get("/api/problems", (req, res) => {
       if(err) { 
         console.log(err);
       }
-
       res.json(rows);
     });
   } else {
@@ -41,9 +43,6 @@ app.get("/api/student_accounts", (req, res) => {
   const req_access_token = req.query.access_token;
   const username = req.query.user;
   const password = req.query.pass;
-  
-
-
   
   if(req_access_token == access_token) {
 connection.query('SELECT * FROM student_accounts WHERE Username = ?',[username], function (error, results, fields) {
@@ -70,12 +69,43 @@ connection.query('SELECT * FROM student_accounts WHERE Username = ?',[username],
     }
   }
   });
-
-  
 }
 else{
   res.sendStatus(401);
 }
+});
+app.post("/api/student_accounts", (req,res)=>{
+  const req_access_token = req.body.access_token;
+  const studentID= req.body.studentID;
+  const fullname = req.body.name;
+  const username = req.body.username;
+  const password = req.body.password;
+  const email = req.body.email;
+  const teacherID = req.body.teacherID;
+
+  if(req_access_token == access_token){
+    var values = {
+      "studentID":studentID,
+      "Name":fullname,
+      "Username":username,
+      "Password":password,
+      "Email":email,
+      "TeacherID":teacherID
+    };
+    connection.query('INSERT INTO student_account SET ?',values,function(error,results){
+      if(error){
+        res.send({
+          "code":400,
+          "failed":"failed to insert"
+        })
+      }else{
+        res.send({
+          "code":200,
+          "success":"user registered sucessfully"
+        });
+      }
+    });
+  }
 });
   
 
