@@ -76,24 +76,31 @@ else{
 });
 app.post("/api/student_accounts", (req,res)=>{
   const req_access_token = req.body.access_token;
-  const studentID= req.body.studentID;
-  const fullname = req.body.name;
-  const username = req.body.username;
-  const password = req.body.password;
-  const email = req.body.email;
-  const teacherID = req.body.teacherID;
+  const studentID= req.body.StudentID;
+  const fullname = req.body.Name;
+  const username = req.body.Username;
+  const password = req.body.Password;
+  const email = req.body.Email;
+  const teacherID = req.body.TeacherID;
 
+  console.log(req.body);
+  
+  
   if(req_access_token == access_token){
     var values = {
-      "studentID":studentID,
+      "StudentID":studentID,
       "Name":fullname,
       "Username":username,
       "Password":password,
       "Email":email,
       "TeacherID":teacherID
     };
-    connection.query('INSERT INTO student_account SET ?',values,function(error,results){
+    console.log(values);
+  
+    connection.query('INSERT INTO student_accounts SET ?',values,function(error,results){
+      
       if(error){
+        console.log(error);
         res.send({
           "code":400,
           "failed":"failed to insert"

@@ -2,6 +2,10 @@
 using System.IO;
 using UnityEngine;
 using System.Text;
+using System.Net.Http;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Collections.Specialized;
 
 public class APIHandler: MonoBehaviour
 {
@@ -13,6 +17,7 @@ public class APIHandler: MonoBehaviour
     // This code will be run before anything else.
     public void Awake()
     {
+        
         endpoint = "http://localhost:1337/api";
         access_token = LoadAcessToken();
 
@@ -48,44 +53,41 @@ public class APIHandler: MonoBehaviour
             return (int)response.StatusCode;
         }
     }
-    public int SignUp(string studenID,string fullname, string username,string password, string email,string teacherID)
+    public async Task<int> SignUpAsync(string studentID,string fullname, string username,string password, string email,string teacherID)
     {
+        HttpClient client = new HttpClient();
         endpoint = "http://localhost:1337/api";
         access_token = LoadAcessToken();
+        string call = endpoint + "/student_accounts";
+        var values = new Dictionary<string, string>
+        {
+            {"StudentID", studentID },
+            {"Fullname", fullname },
+            {"Username",username },
+            {"Password",password },
+            {"Email",email },
+            {"TeacherID",teacherID },
+            {"access_token",access_token}
+        };
+        FormUrlEncodedContent content = new FormUrlEncodedContent(values);
+        var response = await client.PostAsync(call, content);
+        var responseString = await response.Content.ReadAsStringAsync();
+        return (int)response.StatusCode;
+        
 
-        string call = endpoint + "/student_accounts?access_token=" + access_token;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(call);
-        request.Method = "POST";
-        string postData = "&studentID=" + studenID + "&Password=" + password 
-                          + "&Username=" + username + "&Password=" + password
-                          + "&Email=" + email + "&TeacherID=" + teacherID;
-        byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-        request.ContentType = "application/x-www-form-urlencoded";
-        request.ContentLength = byteArray.Length;
-        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-        Stream dataStream = request.GetRequestStream();
-        // Write the data to the request stream.  
-        dataStream.Write(byteArray, 0, byteArray.Length);
-        // Close the Stream object.  
-        dataStream.Close();
-        dataStream = response.GetResponseStream();
-        using (StreamReader reader = new StreamReader(dataStream)) {
-            Debug.Log(reader.ReadToEnd());
-            return (int)response.StatusCode;
-        }
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    //void Start()
+    //{
 
-    }
+    //}
 
-    // Update is called once per frame
-    void Update()
-    {
+    //// Update is called once per frame
+    //void Update()
+    //{
         
-    }
+    //}
 
     private string LoadAcessToken()
     {

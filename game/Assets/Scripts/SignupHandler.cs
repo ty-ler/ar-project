@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Net.Mail;
 using UnityEngine.SceneManagement;
-
+using System.Threading.Tasks;
 
 public class SignupHandler : MonoBehaviour
 {
@@ -45,9 +45,9 @@ public class SignupHandler : MonoBehaviour
     {
         SceneManager.LoadScene("main_menu");
     }
-    void Signup() {
+    async void Signup() {
         APIHandler api = new APIHandler();
-        int status = api.SignUp("123",Fullname.text,Username.text,Password.text,Email.text,"1234567");
+        int status = await api.SignUpAsync("123",Fullname.text,Username.text,Password.text,Email.text,"1234567");
 
         if (status == 200) {
             SceneManager.LoadScene("main_menu");
