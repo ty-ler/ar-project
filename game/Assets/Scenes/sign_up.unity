@@ -1711,6 +1711,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3096ced95c9314e2aab416d9a7abf5ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  studentID: {fileID: 1122166953}
+  Fullname: {fileID: 1932714266}
+  teacherID: {fileID: 2029309103}
+  Email: {fileID: 1061675811}
+  Username: {fileID: 962105138}
+  Password: {fileID: 1417401066}
+  SignUpButton: {fileID: 1902725760}
+  WarningText: {fileID: 1383351072}
+  BackButton: {fileID: 804961874}
 --- !u!4 &1346140222
 Transform:
   m_ObjectHideFlags: 0
