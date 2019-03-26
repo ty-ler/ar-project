@@ -7,7 +7,6 @@ using UnityEngine.Experimental.XR;
 public class GameController : MonoBehaviour
 {
     public GameObject placementIndicator;
-    public GameObject crosshair;
 
     private ARSessionOrigin AROrigin;
     private Pose placementPose;
@@ -17,15 +16,18 @@ public class GameController : MonoBehaviour
     void Start()
     {
         AROrigin = FindObjectOfType<ARSessionOrigin>();
-        crosshair.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        crosshair.SetActive(true);
         UpdatePlacementPose();
         UpdatePlacementIndicator();
+
+        if(Input.touchCount > 0)
+        {
+            ShootRay();
+        }
     }
 
     private void UpdatePlacementIndicator()
@@ -44,7 +46,6 @@ public class GameController : MonoBehaviour
     private void UpdatePlacementPose()
     {
         var screenCenter = Camera.current.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
-        crosshair.transform.position = new Vector3(0f, 0.05f, 1f);
         Ray rayToPlayerPos = Camera.current.ScreenPointToRay(screenCenter);
 
         var arhits = new List<ARRaycastHit>();
@@ -63,5 +64,17 @@ public class GameController : MonoBehaviour
 
             placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
+    }
+
+    private void ShootRay()
+    {
+        Debug.Log("shooting!");
+        var screenCenter = Camera.current.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
+
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.current.transform.position, Camera.current.transform.forward, out hit)) {
+            Debug.Log(hit.transform.name);
+        }
+        Debug.Log(hit.transform);
     }
 }

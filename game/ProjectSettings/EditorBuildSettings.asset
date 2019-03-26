@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/game.unity
     guid: 2fe27f3de93b08e4494f248a89c42c55
   - enabled: 0
@@ -17,7 +17,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/login.unity
     guid: 9ade7bf618fd7ec418e063b7d6d8a200
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/sign_up.unity
     guid: 653637071aded4c3c8e8ccfe9bebf208
+  - enabled: 1
+    path: Assets/Scenes/pet.unity
+    guid: b7e159a50e1d80f44a9cbf3e5d26c452
   m_configObjects: {}
