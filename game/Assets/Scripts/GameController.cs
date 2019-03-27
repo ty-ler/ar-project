@@ -7,15 +7,24 @@ using UnityEngine.Experimental.XR;
 public class GameController : MonoBehaviour
 {
     public GameObject placementIndicator;
+    public GameObject laser;
+    public Camera helperCamera;
+    public Camera arCamera;
 
     private ARSessionOrigin AROrigin;
     private Pose placementPose;
     private bool validPlacementPose = false;
+    private WaitForSeconds shotDuration = new WaitForSeconds(.1f);
+    private LineRenderer laserLine;
 
     // Start is called before the first frame update
     void Start()
     {
+
         AROrigin = FindObjectOfType<ARSessionOrigin>();
+        laserLine = laser.GetComponent<LineRenderer>();
+        //laser.SetActive(false);
+        laserLine.enabled = true;
     }
 
     // Update is called once per frame
@@ -24,7 +33,12 @@ public class GameController : MonoBehaviour
         UpdatePlacementPose();
         UpdatePlacementIndicator();
 
-        if(Input.touchCount > 0)
+        Vector3 cameraCenter = Camera.main.transform.position;
+        Vector3 shootPoint = new Vector3(cameraCenter.x, cameraCenter.y - 10, cameraCenter.z);
+        laserLine.SetPosition(0, shootPoint);
+        laserLine.SetPosition(1, Camera.main.transform.forward);
+
+        if (Input.touchCount > 0)
         {
             ShootRay();
         }
@@ -45,8 +59,8 @@ public class GameController : MonoBehaviour
 
     private void UpdatePlacementPose()
     {
-        var screenCenter = Camera.current.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
-        Ray rayToPlayerPos = Camera.current.ScreenPointToRay(screenCenter);
+        var screenCenter = Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
+        Ray rayToPlayerPos = Camera.main.ScreenPointToRay(screenCenter);
 
         var arhits = new List<ARRaycastHit>();
         var physhits = new List<RaycastHit>();
@@ -56,25 +70,44 @@ public class GameController : MonoBehaviour
 
         if (validPlacementPose)
         {
-            Debug.Log(arhits.Count);
             placementPose = arhits[0].pose;
 
-            var cameraForward = Camera.current.transform.forward;
+            var cameraForward = Camera.main.transform.forward;
             var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized;
 
             placementPose.rotation = Quaternion.LookRotation(cameraBearing);
         }
     }
 
+    private IEnumerator ShotEffect()
+    {
+        laser.SetActive(true);
+        laserLine.enabled = true;
+
+        yield return shotDuration;
+
+        laser.SetActive(false);
+        laserLine.enabled = false;
+    }
+
     private void ShootRay()
     {
+        //StartCoroutine(ShotEffect());
         Debug.Log("shooting!");
-        var screenCenter = Camera.current.ViewportToScreenPoint(new Vector3(0.5f, 0.5f));
+
+        var screenCenter = Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, 0f));
+
+        Vector3 cameraCenter = Camera.main.transform.position;
+        Vector3 shootPoint = new Vector3(cameraCenter.x, cameraCenter.y - 10, cameraCenter.z);
+        laserLine.SetPosition(0, shootPoint);
 
         RaycastHit hit;
-        if (Physics.Raycast(Camera.current.transform.position, Camera.current.transform.forward, out hit)) {
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit)) {
+            laserLine.SetPosition(1, hit.point);
             Debug.Log(hit.transform.name);
+        } else
+        {
+            laserLine.SetPosition(1, Camera.main.transform.forward);
         }
-        Debug.Log(hit.transform);
     }
 }

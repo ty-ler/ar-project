@@ -69,6 +69,8 @@ public class PetController : MonoBehaviour
 
     void PlacePet()
     {
-        Instantiate(pet, placementPose.position, Quaternion.identity);
+        var petRotation = placementPose.rotation;
+        petRotation.y = -petRotation.y;
+        Instantiate(pet, placementPose.position, petRotation);
     }
 }
