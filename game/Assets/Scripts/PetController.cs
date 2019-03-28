@@ -12,6 +12,8 @@ public class PetController : MonoBehaviour
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
     private bool validPlacementPose = false;
+    private int maxCatAllowed = 1;
+    private int currentNumberOfCats = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +29,16 @@ public class PetController : MonoBehaviour
 
         if(validPlacementPose && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            PlacePet();
+            if (currentNumberOfCats < maxCatAllowed) {
+                PlacePet();
+                placementIndicator.SetActive(false);
+                currentNumberOfCats++;
+            }
+            else 
+            {
+                pet.GetComponent<CatMoveTo>().StartMove(placementPose.position);
+            }
+
         }
     }
 
@@ -69,8 +80,6 @@ public class PetController : MonoBehaviour
 
     void PlacePet()
     {
-        var petRotation = placementPose.rotation;
-        petRotation.y = -petRotation.y;
-        Instantiate(pet, placementPose.position, petRotation);
+        pet = Instantiate(pet, placementPose.position, placementPose.rotation);
     }
 }
