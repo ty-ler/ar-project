@@ -33,7 +33,16 @@ public class CatMoveTo : MonoBehaviour
 
             // Set our position as a fraction of the distance between the markers.
             transform.position = Vector3.Lerp(startMarker.position, endMarker,fracJourney);
+
+            if (fracJourney  < 0.1)
+            {
+                var lookPos = endMarker - transform.position;
+                lookPos.y = 0;
+                var rotation = Quaternion.LookRotation(lookPos);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10f);
+            }
         }
+
     }
 
     public void StartMove(Vector3 endPos) 
