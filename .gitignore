@@ -2,7 +2,7 @@ webserver/node_modules
 game/Assets/Wikitude
 game/Assets/Plugins/iOS/Wikitude.*
 game/Assets/Plugins/iOS/WikitudeSDK.* 
-
+game/Assets/GoogleARCore/
 =============== 
 Unity generated
 ===============
