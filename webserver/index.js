@@ -77,7 +77,7 @@ else{
 app.post("/api/student_accounts", (req,res)=>{
   const req_access_token = req.body.access_token;
   const studentID= req.body.StudentID;
-  const fullname = req.body.Name;
+  const fullname = req.body.Fullname;
   const username = req.body.Username;
   const password = req.body.Password;
   const email = req.body.Email;
