@@ -8,19 +8,25 @@ using System.Threading.Tasks;
 
 public class SignupHandler : MonoBehaviour
 {
+    public InputField studentID;
     public InputField Fullname;
+    public InputField teacherID;
     public InputField Email;
     public InputField Username;
     public InputField Password;
     public Button SignUpButton;
     public Text WarningText;
     public Button BackButton;
+
+
     // Start is called before the first frame update
     void Start()
     {
         Email.onEndEdit.AddListener(IsValidEmail);
         BackButton.onClick.AddListener(LoadMainMenu);
         SignUpButton.onClick.AddListener(Signup);
+       
+
     }
 
     // Update is called once per frame
@@ -47,7 +53,7 @@ public class SignupHandler : MonoBehaviour
     }
     async void Signup() {
         APIHandler api = new APIHandler();
-        int status = await api.SignUpAsync("123",Fullname.text,Username.text,Password.text,Email.text,"1234567");
+        int status = await api.SignUpAsync(studentID.text,Fullname.text,Username.text,Password.text,Email.text,teacherID.text);
 
         if (status == 200) {
             SceneManager.LoadScene("main_menu");
