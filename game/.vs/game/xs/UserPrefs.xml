@@ -1,5 +1,9 @@
 ﻿<Properties StartupConfiguration="{1AF7E356-2D58-7119-FE6C-C1ED31A62E64}|">
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/QAHandler.cs">
+    <Files>
+      <File FileName="Assets/Scripts/QAHandler.cs" Line="8" Column="53" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
