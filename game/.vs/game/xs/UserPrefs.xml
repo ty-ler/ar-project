@@ -1,9 +1,30 @@
 ﻿<Properties StartupConfiguration="{1AF7E356-2D58-7119-FE6C-C1ED31A62E64}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PetScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/LoginHandler.cs">
     <Files>
-      <File FileName="Assets/Scripts/PetController.cs" Line="69" Column="54" />
-      <File FileName="Assets/Scripts/PetScript.cs" Line="26" Column="54" />
+      <File FileName="Assets/Scripts/MainMenuController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/LoginHandler.cs" Line="48" Column="10" />
+      <File FileName="Assets/Scripts/APIHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/SignupHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/ARFeatheredPlaneMeshVisualizer.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/CatMoveTo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PetController.cs" Line="163" Column="36" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/QAHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/FoodScript.cs" Line="11" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="game" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="LoginHandler.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

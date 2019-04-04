@@ -29,6 +29,7 @@ public class LoginHandler : MonoBehaviour
     void LoadMainMenu() {
         SceneManager.LoadScene("main_menu");
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -42,8 +43,7 @@ public class LoginHandler : MonoBehaviour
 
         if (status == 200)
         {
-            main.LoadMainMenu();
-           
+            SceneManager.LoadScene("pet");
         }
         if (status == 203)
         {
