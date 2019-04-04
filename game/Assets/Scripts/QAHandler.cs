@@ -12,9 +12,8 @@ public class QAHandler : MonoBehaviour
     {
         Panel.gameObject.SetActive(false);
         button.onClick.AddListener(OnClick);
+        
         Question.text = "What is the sqaure root of 49?";
-
-
     }
 
     // Update is called once per frame

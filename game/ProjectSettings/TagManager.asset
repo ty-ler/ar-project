@@ -4,7 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - HelperCamera
+  - Food
   layers:
   - Default
   - TransparentFX
