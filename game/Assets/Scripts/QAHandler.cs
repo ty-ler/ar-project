@@ -7,10 +7,13 @@ public class QAHandler : MonoBehaviour
 {
     public GameObject Panel;
     public Button button;
+    public Text Question;
     void Start()
     {
-    Panel.gameObject.SetActive(false);
-    button.onClick.AddListener(OnClick);
+        Panel.gameObject.SetActive(false);
+        button.onClick.AddListener(OnClick);
+        Question.text = "What is the sqaure root of 49?";
+
 
     }
 
@@ -21,6 +24,6 @@ public class QAHandler : MonoBehaviour
     }
     public void OnClick()
     {
-    Panel.SetActive(!Panel.activeSelf);
+        Panel.SetActive(!Panel.activeSelf);
     }
 }
