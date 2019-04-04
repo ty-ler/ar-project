@@ -62,7 +62,7 @@ public class PetController : MonoBehaviour
             else if(placed && !wonGame)
             {
                 pet.GetComponent<CatMoveTo>().StartMove(placementPose.position);
-            }
+            } 
         }
 
         if(placed && timerGoing)
@@ -158,9 +158,8 @@ public class PetController : MonoBehaviour
 
         placementPose.position = petPlanePos;
 
-        petPlane.transform.SetPositionAndRotation(petPlanePos, Quaternion.identity);
-        pet.transform.SetPositionAndRotation(petPlanePos, placementPose.rotation);
-
+        petPlane = Instantiate(petPlane, petPlanePos, Quaternion.identity);
+        pet = Instantiate(pet, petPlanePos, placementPose.rotation);
         petPlane.name = "Pet Plane";
 
         pet.SetActive(true);
