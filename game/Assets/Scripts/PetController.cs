@@ -5,6 +5,7 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.Experimental.XR;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class PetController : MonoBehaviour
 {
@@ -12,17 +13,25 @@ public class PetController : MonoBehaviour
     public GameObject placementIndicator;
     public GameObject petPlane;
     public GameObject[] foods;
+    public TextMeshProUGUI timerText;
 
     public float correctAnswer;
+    public bool timerGoing;
+    public string currentTimerText;
 
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
-    private bool validPlacementPose = false;
-    private bool placed = false;
+    private bool validPlacementPose;
+    private bool placed;
     Vector3 petPlanePos;
+    private float startTime;
+
 
     void Start()
     {
+        placed = false;
+        validPlacementPose = false;
+
         arOrigin = FindObjectOfType<ARSessionOrigin>();
         pet.SetActive(false);
         petPlane.SetActive(false);
@@ -35,13 +44,15 @@ public class PetController : MonoBehaviour
         UpdatePlacementPose();
         UpdatePlacementIndicator();
 
-        if(validPlacementPose && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        if (validPlacementPose && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             if (!placed) {
                 PlacePet();
                 PlaceFood();
                 ShowFood(true);
                 correctAnswer = 7;
+                startTime = Time.time;
+                timerGoing = true;
             }
             else 
             {
@@ -53,7 +64,16 @@ public class PetController : MonoBehaviour
                     Debug.Log(e.StackTrace);
                 }
             }
+        }
 
+        if(placed && timerGoing)
+        {
+            float t = Time.time - startTime;
+            string minutes = ((int)t / 60).ToString();
+            string seconds = (t % 60).ToString("f0");
+
+            currentTimerText = minutes + ":" + seconds;
+            timerText.SetText(currentTimerText);
         }
 
     }
@@ -131,10 +151,12 @@ public class PetController : MonoBehaviour
 
         Vector3 placePosePos = placementPose.position;
 
-        petPlanePos = new Vector3(placePosePos.x, placePosePos.y, placePosePos.z);
+        petPlanePos = new Vector3(placePosePos.x, placePosePos.y - 1f, placePosePos.z) + placementPose.forward;
 
-        petPlane = Instantiate(petPlane, placePosePos, Quaternion.identity);
-        pet = Instantiate(pet, placePosePos, placementPose.rotation);
+        placementPose.position = petPlanePos;
+
+        petPlane = Instantiate(petPlane, petPlanePos, Quaternion.identity);
+        pet = Instantiate(pet, petPlanePos, placementPose.rotation);
         petPlane.name = "Pet Plane";
 
         pet.SetActive(true);
@@ -143,10 +165,6 @@ public class PetController : MonoBehaviour
 
     void PlaceFood()
     {
-        Vector3 back = new Vector3(0, 0.1f, 0.35f);
-        Vector3 right = new Vector3(0.35f, 0.2f, 0);
-        Vector3 left = new Vector3(-0.35f, 0.15f, 0);
-
         Vector3 catPos = placementPose.position;
 
         GameObject cherry = foods[0];
@@ -157,9 +175,37 @@ public class PetController : MonoBehaviour
         cake.GetComponent<FoodScript>().setValue(8f);
         hamburger.GetComponent<FoodScript>().setValue(7f);
 
-        cherry.transform.position = new Vector3(catPos.x, catPos.y + .1f, catPos.z + .4f);
-        cake.transform.position = new Vector3(catPos.x, catPos.y + .1f, catPos.z - .4f);
-        hamburger.transform.position = new Vector3(catPos.x + .4f, catPos.y + .05f, catPos.z);
+        foreach(GameObject food in foods)
+        {
+            bool validPos = false;
+            Vector3 randomPosition = new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
+            while (!validPos)
+            {
+                Collider[] collisions = Physics.OverlapSphere(randomPosition, 3f);
+                foreach(Collider col in collisions)
+                {
+                    if(col.CompareTag("Food"))
+                    {
+                        validPos = false;
+                    }
+                    else
+                    {
+                        validPos = true;
+                    }
+                }
+
+                randomPosition = new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
+            }
+
+            if(validPos)
+            {
+                food.transform.position += randomPosition;
+            }
+        }
+
+        //cherry.transform.position += new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
+        //cake.transform.position += new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
+        //hamburger.transform.position += new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
     }
 
     void ShowFood(bool show)
@@ -174,5 +220,10 @@ public class PetController : MonoBehaviour
                 food.SetActive(false);
             }
         }
+    }
+
+    float getRandomCoord()
+    {
+        return UnityEngine.Random.Range(-1f, 1f);
     }
 }
