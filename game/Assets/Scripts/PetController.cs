@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.Experimental.XR;
+using UnityEngine.UI;
 
 public class PetController : MonoBehaviour
 {
@@ -17,6 +18,13 @@ public class PetController : MonoBehaviour
     private int currentNumberOfCats = 0;
     private bool placed = false;
     Vector3 petPlanePos;
+    public GameObject fruit;
+    public GameObject food1;
+    public GameObject food2;
+    public Text TextField;
+   
+
+    public float distance = -5;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +32,10 @@ public class PetController : MonoBehaviour
         arOrigin = FindObjectOfType<ARSessionOrigin>();
         pet.SetActive(false);
         petPlane.SetActive(false);
+        fruit.AddComponent<MeshCollider>();
+        food1.AddComponent<MeshCollider>();
+        food2.AddComponent<MeshCollider>();
+
     }
 
     // Update is called once per frame
@@ -36,6 +48,7 @@ public class PetController : MonoBehaviour
         {
             if (currentNumberOfCats < maxCatAllowed) {
                 PlacePet();
+                PlaceFood();
                 placementIndicator.SetActive(false);
                 currentNumberOfCats++;
             }
@@ -45,6 +58,7 @@ public class PetController : MonoBehaviour
             }
 
         }
+
     }
 
     void UpdatePlacementIndicator()
@@ -123,5 +137,26 @@ public class PetController : MonoBehaviour
         pet = Instantiate(pet, placePosePos, placementPose.rotation);
         pet.SetActive(true);
         petPlane.SetActive(true);
+    }
+    void PlaceFood()
+    {
+        Vector3 back = new Vector3(0, 0.1f, 0.35f);
+        Vector3 right = new Vector3(0.35f, 0.2f, 0);
+        Vector3 left = new Vector3(-0.35f, 0.15f, 0);
+
+
+
+
+        Instantiate(fruit, pet.transform.position + back, transform.rotation);
+            Instantiate(food1, pet.transform.position + right, transform.rotation);
+            Instantiate(food2, pet.transform.position + left, transform.rotation);
+
+
+
+
+    }
+    public void OnCollisionEnter(Collider pet)
+    {
+       TextField.text = "Hello!";
     }
 }
