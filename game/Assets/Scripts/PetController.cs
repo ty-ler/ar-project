@@ -194,7 +194,10 @@ public class PetController : MonoBehaviour
                     }
                 }
 
-                randomPosition = new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
+                if(!validPos)
+                {
+                    randomPosition = new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
+                }
             }
 
             if(validPos)
@@ -202,10 +205,6 @@ public class PetController : MonoBehaviour
                 food.transform.position += randomPosition;
             }
         }
-
-        //cherry.transform.position += new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
-        //cake.transform.position += new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
-        //hamburger.transform.position += new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
     }
 
     void ShowFood(bool show)
