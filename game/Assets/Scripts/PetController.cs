@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.Experimental.XR;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System;
 using TMPro;
 
@@ -18,6 +19,7 @@ public class PetController : MonoBehaviour
     public float correctAnswer;
     public bool timerGoing;
     public string currentTimerText;
+    public bool wonGame;
 
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
@@ -31,12 +33,14 @@ public class PetController : MonoBehaviour
     {
         placed = false;
         validPlacementPose = false;
-
+        wonGame = false;
         arOrigin = FindObjectOfType<ARSessionOrigin>();
         pet.SetActive(false);
         petPlane.SetActive(false);
 
         ShowFood(false);
+
+        timerText.SetText("Scanning...");
     }
 
     void Update()
@@ -46,23 +50,18 @@ public class PetController : MonoBehaviour
 
         if (validPlacementPose && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            if (!placed) {
+            if (!placed && !wonGame) {
                 PlacePet();
                 PlaceFood();
                 ShowFood(true);
                 correctAnswer = 7;
                 startTime = Time.time;
                 timerGoing = true;
+                timerText.SetText("");
             }
-            else 
+            else if(placed && !wonGame)
             {
-                try
-                {
-                    pet.GetComponent<CatMoveTo>().StartMove(placementPose.position);
-                } catch (Exception e)
-                {
-                    Debug.Log(e.StackTrace);
-                }
+                pet.GetComponent<CatMoveTo>().StartMove(placementPose.position);
             }
         }
 
@@ -122,8 +121,12 @@ public class PetController : MonoBehaviour
 
             if (validPlacementPose)
             {
+                timerText.SetText("Tap to Place Pet");
                 placementPose = hits[0].pose;
                 placementPose.rotation = Quaternion.LookRotation(cameraBearing);
+            } else
+            {
+                timerText.SetText("Scanning...");
             }
         }
         else
@@ -194,7 +197,10 @@ public class PetController : MonoBehaviour
                     }
                 }
 
-                randomPosition = new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
+                if(!validPos)
+                {
+                    randomPosition = new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
+                }
             }
 
             if(validPos)
@@ -202,10 +208,6 @@ public class PetController : MonoBehaviour
                 food.transform.position += randomPosition;
             }
         }
-
-        //cherry.transform.position += new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
-        //cake.transform.position += new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
-        //hamburger.transform.position += new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
     }
 
     void ShowFood(bool show)

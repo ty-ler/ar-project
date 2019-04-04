@@ -12,6 +12,7 @@ public class PetScript : MonoBehaviour
 
     void Start()
     {
+        winText.SetText("");
         petController = FindObjectOfType<PetController>();
         correctAnswer = petController.correctAnswer;
     }
@@ -22,12 +23,12 @@ public class PetScript : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             float foodValue = other.gameObject.GetComponent<FoodScript>().value;
-            Debug.Log(correctAnswer + ", " + foodValue);
             if(foodValue == correctAnswer)
             {
                 winText.SetText("Correct Answer!\nTime: " + petController.currentTimerText);
                 petController.timerGoing = false;
                 petController.timerText.gameObject.SetActive(false);
+                petController.wonGame = true;
             }
         }
     }
@@ -41,7 +42,6 @@ public class PetScript : MonoBehaviour
             Debug.Log(correctAnswer + ", " + foodValue);
             if (foodValue == correctAnswer)
             {
-                Debug.Log("CORRECT ANSWER!!!!");
                 winText.SetText("Correct Answer!");
             }
         }
