@@ -1,14 +1,15 @@
 ﻿<Properties StartupConfiguration="{1AF7E356-2D58-7119-FE6C-C1ED31A62E64}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/LoginHandler.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PetController.cs">
     <Files>
       <File FileName="Assets/Scripts/MainMenuController.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/LoginHandler.cs" Line="12" Column="24" />
-      <File FileName="Assets/Scripts/APIHandler.cs" Line="44" Column="19" />
+      <File FileName="Assets/Scripts/LoginHandler.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/APIHandler.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/SignupHandler.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/ARFeatheredPlaneMeshVisualizer.cs" Line="1" Column="1" />
-      <File FileName="Assets/GoogleARCore/Examples/HelloAR/Scripts/HelloARController.cs" Line="98" Column="18" />
-      <File FileName="Assets/Scripts/CatMoveTo.cs" Line="13" Column="1" />
-      <File FileName="Assets/Scripts/PetController.cs" Line="152" Column="9" />
+      <File FileName="Assets/GoogleARCore/Examples/HelloAR/Scripts/HelloARController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/CatMoveTo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PetController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/QAHandler.cs" Line="1" Column="1" />
     </Files>
     <Pads>
@@ -17,8 +18,9 @@
           <Node name="game" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="LoginHandler.cs" selected="True" />
+                <Node name="PetController.cs" selected="True" />
               </Node>
+              <Node name="SMC Pack 1" expanded="True" />
             </Node>
           </Node>
         </State>
