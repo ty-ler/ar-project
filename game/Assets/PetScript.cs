@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class PetScript : MonoBehaviour
 {
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("RUNNING THIS CODE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        Debug.Log(other.gameObject.tag);
+        if(other.gameObject.CompareTag("Food"))
+        {
+            other.gameObject.SetActive(false);
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        Debug.Log(other.gameObject.tag);
+        if (other.gameObject.CompareTag("Food"))
+        {
+            other.gameObject.SetActive(false);
+        }
     }
 }

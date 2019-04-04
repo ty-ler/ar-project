@@ -6,15 +6,13 @@ public class FoodScript : MonoBehaviour
 {
     public float value { get; set; }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    GameObject collidedObj = other.gameObject;
+    //    string objectTag = collidedObj.tag;
+    //    if (objectTag == "Food")
+    //    {
+    //        Debug.Log("FOOD!!!!!!!!!!!!!!!!!!!!!");
+    //    }
+    //}
 }

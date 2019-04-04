@@ -9,8 +9,8 @@ public class QAHandler : MonoBehaviour
     public Button button;
     void Start()
     {
-    Panel.gameObject.SetActive(false);
-    button.onClick.AddListener(OnClick);
+        Panel.gameObject.SetActive(false);
+        button.onClick.AddListener(OnClick);
 
     }
 
@@ -21,6 +21,6 @@ public class QAHandler : MonoBehaviour
     }
     public void OnClick()
     {
-    Panel.SetActive(!Panel.activeSelf);
+        Panel.SetActive(!Panel.activeSelf);
     }
 }

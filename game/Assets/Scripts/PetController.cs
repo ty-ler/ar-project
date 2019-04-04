@@ -72,12 +72,14 @@ public class PetController : MonoBehaviour
 
     void UpdatePlacementIndicator()
     {
+        Vector3 placeIndPos = new Vector3(placementPose.position.x, placementPose.position.y + .001f, placementPose.position.z);
+
         if(!placed)
         {
             if (validPlacementPose)
             {
                 placementIndicator.SetActive(true);
-                placementIndicator.transform.SetPositionAndRotation(placementPose.position, placementPose.rotation);
+                placementIndicator.transform.SetPositionAndRotation(placeIndPos, placementPose.rotation);
             }
             else
             {
@@ -88,7 +90,7 @@ public class PetController : MonoBehaviour
             if(validPlacementPose)
             {
                 placementIndicator.SetActive(true);
-                placementIndicator.transform.SetPositionAndRotation(placementPose.position, placementPose.rotation);
+                placementIndicator.transform.SetPositionAndRotation(placeIndPos, placementPose.rotation);
             } else
             {
                 placementIndicator.SetActive(false);
@@ -159,9 +161,13 @@ public class PetController : MonoBehaviour
 
         Vector3 catPos = placementPose.position;
 
-        foods[0].transform.position = new Vector3(catPos.x, catPos.y + .05f, catPos.z + .4f);
-        foods[1].transform.position = new Vector3(catPos.x, catPos.y + .05f, catPos.z - .4f);
-        foods[2].transform.position = new Vector3(catPos.x + .4f, catPos.y + .05f, catPos.z);
+        GameObject cherry = foods[0];
+        GameObject cake = foods[1];
+        GameObject hamburger = foods[2];
+
+        cherry.transform.position = new Vector3(catPos.x, catPos.y + .1f, catPos.z + .4f);
+        cake.transform.position = new Vector3(catPos.x, catPos.y + .1f, catPos.z - .4f);
+        hamburger.transform.position = new Vector3(catPos.x + .4f, catPos.y + .05f, catPos.z);
 
     }
 

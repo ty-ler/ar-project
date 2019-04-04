@@ -27,30 +27,32 @@ public class CatMoveTo : MonoBehaviour
 
     // Follows the target position like with a spring
     void Update() {
-        if(journeyLength > 0 && startMarker != null && endMarker != null)
+        if(startMarker != null && endMarker != null)
         {
-            // Distance moved = time * speed.
-            float distCovered = (Time.time - startTime) * speed;
-
-            // Fraction of journey completed = current distance divided by total distance.
-            float fracJourney = distCovered / journeyLength;
-
-            // Set our position as a fraction of the distance between the markers.
-            transform.position = Vector3.Lerp(startMarker.position, endMarker,fracJourney);
-
-            if (fracJourney  < 0.1)
+            if (journeyLength > 0)
             {
-                var lookPos = endMarker - transform.position;
-                lookPos.y = 0;
-                var rotation = Quaternion.LookRotation(lookPos);
-                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10f);
-            }   
-        }
-        if (Vector3.Distance(startMarker.position, endMarker) < 0.1) 
-        {
-            catAnim.SetBool("IsRunning", false);
-        }
+                // Distance moved = time * speed.
+                float distCovered = (Time.time - startTime) * speed;
 
+                // Fraction of journey completed = current distance divided by total distance.
+                float fracJourney = distCovered / journeyLength;
+
+                // Set our position as a fraction of the distance between the markers.
+                transform.position = Vector3.Lerp(startMarker.position, endMarker, fracJourney);
+
+                if (fracJourney < 0.1)
+                {
+                    var lookPos = endMarker - transform.position;
+                    lookPos.y = 0;
+                    var rotation = Quaternion.LookRotation(lookPos);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10f);
+                }
+            }
+            if (Vector3.Distance(startMarker.position, endMarker) < 0.1)
+            {
+                catAnim.SetBool("IsRunning", false);
+            }
+        }
     }
 
     public void StartMove(Vector3 endPos) 
