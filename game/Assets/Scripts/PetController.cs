@@ -158,8 +158,9 @@ public class PetController : MonoBehaviour
 
         placementPose.position = petPlanePos;
 
-        petPlane = Instantiate(petPlane, petPlanePos, Quaternion.identity);
-        pet = Instantiate(pet, petPlanePos, placementPose.rotation);
+        petPlane.transform.SetPositionAndRotation(petPlanePos, Quaternion.identity);
+        pet.transform.SetPositionAndRotation(petPlanePos, placementPose.rotation);
+
         petPlane.name = "Pet Plane";
 
         pet.SetActive(true);
