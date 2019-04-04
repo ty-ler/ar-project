@@ -13,14 +13,13 @@ public class PetController : MonoBehaviour
     public GameObject petPlane;
     public GameObject[] foods;
 
+    public float correctAnswer;
+
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
     private bool validPlacementPose = false;
     private bool placed = false;
     Vector3 petPlanePos;
-
-    public Text TextField;
-   
 
     void Start()
     {
@@ -42,6 +41,7 @@ public class PetController : MonoBehaviour
                 PlacePet();
                 PlaceFood();
                 ShowFood(true);
+                correctAnswer = 7;
             }
             else 
             {
@@ -56,18 +56,6 @@ public class PetController : MonoBehaviour
 
         }
 
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log(other.gameObject.name);
-        other.gameObject.SetActive(false);
-    }
-
-    void OnCollisionEnter(Collision col)
-    {
-        TextField.text = "Hello!";
-        col.gameObject.SetActive(false);
     }
 
     void UpdatePlacementIndicator()
@@ -165,10 +153,13 @@ public class PetController : MonoBehaviour
         GameObject cake = foods[1];
         GameObject hamburger = foods[2];
 
+        cherry.GetComponent<FoodScript>().setValue(6.5f);
+        cake.GetComponent<FoodScript>().setValue(8f);
+        hamburger.GetComponent<FoodScript>().setValue(7f);
+
         cherry.transform.position = new Vector3(catPos.x, catPos.y + .1f, catPos.z + .4f);
         cake.transform.position = new Vector3(catPos.x, catPos.y + .1f, catPos.z - .4f);
         hamburger.transform.position = new Vector3(catPos.x + .4f, catPos.y + .05f, catPos.z);
-
     }
 
     void ShowFood(bool show)
