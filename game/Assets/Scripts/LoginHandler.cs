@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LoginHandler : MonoBehaviour
 {
@@ -11,19 +12,23 @@ public class LoginHandler : MonoBehaviour
     public InputField PasswordField;
     public Button LButton;
     public Text LoginNotification;
+    public Button backButton;
 
     void Start()
     {
         EmailField.onValueChanged.AddListener(ClearWarning);
         PasswordField.onValueChanged.AddListener(ClearWarning);
         LButton.onClick.AddListener(LoginProcess);
+        backButton.onClick.AddListener(LoadMainMenu);
     }
 
     private void ClearWarning(string arg0)
     {
         LoginNotification.text = " ";
     }
-
+    void LoadMainMenu() {
+        SceneManager.LoadScene("main_menu");
+    }
     // Update is called once per frame
     void Update()
     {

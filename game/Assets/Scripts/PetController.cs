@@ -148,8 +148,8 @@ public class PetController : MonoBehaviour
 
 
         Instantiate(fruit, pet.transform.position + back, transform.rotation);
-            Instantiate(food1, pet.transform.position + right, transform.rotation);
-            Instantiate(food2, pet.transform.position + left, transform.rotation);
+        Instantiate(food1, pet.transform.position + right, transform.rotation);
+        Instantiate(food2, pet.transform.position + left, transform.rotation);
 
 
 
