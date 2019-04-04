@@ -27,7 +27,7 @@ public class CatMoveTo : MonoBehaviour
 
     // Follows the target position like with a spring
     void Update() {
-        if(journeyLength > 0)
+        if(journeyLength > 0 && startMarker != null && endMarker != null)
         {
             // Distance moved = time * speed.
             float distCovered = (Time.time - startTime) * speed;
@@ -44,7 +44,7 @@ public class CatMoveTo : MonoBehaviour
                 lookPos.y = 0;
                 var rotation = Quaternion.LookRotation(lookPos);
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10f);
-            }
+            }   
         }
         if (Vector3.Distance(startMarker.position, endMarker) < 0.1) 
         {
