@@ -9,11 +9,12 @@ public class PetScript : MonoBehaviour
 
     private float correctAnswer;
     private PetController petController;
-
+    private QAHandler HealthBar;
     void Start()
     {
         winText.SetText("");
         petController = FindObjectOfType<PetController>();
+        HealthBar = GetComponent<QAHandler>();
         correctAnswer = petController.correctAnswer;
     }
 
@@ -23,13 +24,14 @@ public class PetScript : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             float foodValue = other.gameObject.GetComponent<FoodScript>().value;
-            if(foodValue == correctAnswer)
-            {
+            if (foodValue == correctAnswer) {
                 winText.SetText("Correct Answer!\nTime: " + petController.currentTimerText);
                 petController.timerGoing = false;
                 petController.timerText.gameObject.SetActive(false);
                 petController.wonGame = true;
             }
+            else
+                HealthBar.OnDamage();
         }
     }
 
@@ -40,10 +42,11 @@ public class PetScript : MonoBehaviour
             other.gameObject.SetActive(false);    
             float foodValue = other.gameObject.GetComponent<FoodScript>().value;
             Debug.Log(correctAnswer + ", " + foodValue);
-            if (foodValue == correctAnswer)
-            {
+            if (foodValue == correctAnswer) {
                 winText.SetText("Correct Answer!");
             }
+            else
+                HealthBar.OnDamage();
         }
     }
 }
