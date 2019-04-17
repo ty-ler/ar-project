@@ -15,11 +15,16 @@ public class PetController : MonoBehaviour
     public GameObject petPlane;
     public GameObject[] foods;
     public TextMeshProUGUI timerText;
+    public Image HealthBar;
+    public Text HealthBarPercentage;
 
     public float correctAnswer;
     public bool timerGoing;
     public string currentTimerText;
     public bool wonGame;
+    private float health;
+    private float startHealth = 1f;
+    
 
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
@@ -37,7 +42,8 @@ public class PetController : MonoBehaviour
         arOrigin = FindObjectOfType<ARSessionOrigin>();
         pet.SetActive(false);
         petPlane.SetActive(false);
-
+        HealthBar.fillAmount = startHealth;
+        health = startHealth;
         ShowFood(false);
 
         timerText.SetText("Scanning...");
@@ -227,5 +233,11 @@ public class PetController : MonoBehaviour
     float getRandomCoord()
     {
         return UnityEngine.Random.Range(-1f, 1f);
+    }
+    public void OnDamage() {
+        health = health - 0.1f;
+        HealthBar.fillAmount = health;
+        Debug.Log(health);
+        HealthBarPercentage.text = (health / 1)*100 + "%";
     }
 }
