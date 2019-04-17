@@ -146,7 +146,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 30, y: 7}
+  m_AnchoredPosition: {x: 35.1, y: 1}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &86738961
@@ -182,7 +182,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: 100%
 --- !u!222 &86738962
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1416,10 +1416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Panel: {fileID: 1453489629}
   button: {fileID: 1647095889}
-  Question: {fileID: 0}
-  HealthBar: {fileID: 1485491471}
-  health: 1
-  HealthPercent: {fileID: 86738961}
+  Question: {fileID: 1864075087}
 --- !u!114 &671366159 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1226567172802087637, guid: c22803a3788f52546b2602c10a8497ea,
@@ -2207,6 +2204,8 @@ MonoBehaviour:
   - {fileID: 1249251907}
   - {fileID: 209198928}
   timerText: {fileID: 454800629}
+  HealthBar: {fileID: 1485491471}
+  HealthBarPercentage: {fileID: 86738961}
   correctAnswer: 0
   timerGoing: 0
   currentTimerText: 

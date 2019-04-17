@@ -9,12 +9,10 @@ public class PetScript : MonoBehaviour
 
     private float correctAnswer;
     private PetController petController;
-    private QAHandler HealthBar;
     void Start()
     {
         winText.SetText("");
         petController = FindObjectOfType<PetController>();
-        HealthBar = GetComponent<QAHandler>();
         correctAnswer = petController.correctAnswer;
     }
 
@@ -31,22 +29,7 @@ public class PetScript : MonoBehaviour
                 petController.wonGame = true;
             }
             else
-                HealthBar.OnDamage();
-        }
-    }
-
-    void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag("Food"))
-        {
-            other.gameObject.SetActive(false);    
-            float foodValue = other.gameObject.GetComponent<FoodScript>().value;
-            Debug.Log(correctAnswer + ", " + foodValue);
-            if (foodValue == correctAnswer) {
-                winText.SetText("Correct Answer!");
-            }
-            else
-                HealthBar.OnDamage();
+                petController.OnDamage();
         }
     }
 }
