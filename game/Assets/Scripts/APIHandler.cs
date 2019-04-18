@@ -6,58 +6,43 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Collections.Specialized;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 
-public class APIHandler: MonoBehaviour
+public class APIHandler
 {
 
-    private string endpoint;
+    private static string endpoint = "http://localhost:1337/api";
     private string access_token;
 
-    // Awake is the first method called in the lifecylce of a script.
-    // This code will be run before anything else.
-    public void Awake()
+    public APIHandler()
     {
-        
-        endpoint = "http://localhost:1337/api";
-        access_token = LoadAcessToken();
-
-        string call = endpoint + "/problems?access_token=" + access_token;
-
-
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(call);
-        request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-
-
-        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-        using (Stream stream = response.GetResponseStream())
-        using (StreamReader reader = new StreamReader(stream))
-        {
-            Debug.Log(reader.ReadToEnd());
-        }
+        LoadAcessToken();
     }
 
     public int Login(string username, string password)
     {
-        endpoint = "http://localhost:1337/api";
-        access_token = LoadAcessToken();
-    
-        string call = endpoint + "/student_accounts?access_token=" + access_token + "&user=" + username + "&pass=" +password ;
-
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(call);
-        request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-        using (Stream stream = response.GetResponseStream())
-        using (StreamReader reader = new StreamReader(stream))
+        Dictionary<string, string> parameters = new Dictionary<string, string>
         {
-            Debug.Log(reader.ReadToEnd());
-            return (int)response.StatusCode;
+            {"user", username},
+            {"pass", password}
+        };
+
+        try
+        {
+            JObject result = get("/student_accounts", parameters);
+            return (int)result["status"];
+        } catch(Exception e)
+        {
+            Debug.Log(e);
+            return 401;
         }
     }
+
     public async Task<int> SignUpAsync(string studentID,string fullname, string username,string password, string email,string teacherID)
     {
         HttpClient client = new HttpClient();
-        endpoint = "http://localhost:1337/api";
-        access_token = LoadAcessToken();
         string call = endpoint + "/student_accounts";
         var values = new Dictionary<string, string>
         {
@@ -72,26 +57,43 @@ public class APIHandler: MonoBehaviour
         FormUrlEncodedContent content = new FormUrlEncodedContent(values);
         var response = await client.PostAsync(call, content);
         var responseString = await response.Content.ReadAsStringAsync();
+
         return (int)response.StatusCode;
         
 
     }
 
-    // Start is called before the first frame update
-    //void Start()
-    //{
-
-    //}
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-        
-    //}
-
-    private string LoadAcessToken()
+    public JObject get(string path, Dictionary<string, string> parameters)
     {
-        string access_token = null;
+        string call = endpoint + path + "?access_token=" + access_token;
+
+        if(parameters != null && parameters.Count > 0)
+        {
+            foreach(KeyValuePair<string, string> entry in parameters)
+            {
+                call += $"&{entry.Key}={entry.Value}";
+            }
+        }
+
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(call);
+        request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+
+        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+        using (Stream stream = response.GetResponseStream())
+        using (StreamReader reader = new StreamReader(stream))
+        {
+            string jsonStr = reader.ReadToEnd();
+            JObject res = new JObject();
+            res.Add("status", 200);
+            res.Add("res", JArray.Parse(jsonStr));
+
+            return res;
+        }
+    }
+
+    private void LoadAcessToken()
+    {
         try {
             using (StreamReader reader = new StreamReader("../webserver/auth.json"))
             {
@@ -103,9 +105,6 @@ public class APIHandler: MonoBehaviour
         {
             Debug.Log(e.Message);
         }
-
-        return access_token;
-        
     }
 }
 
