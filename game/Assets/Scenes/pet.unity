@@ -2210,10 +2210,7 @@ MonoBehaviour:
   timerGoing: 0
   currentTimerText: 
   wonGame: 0
-<<<<<<< tyler
   apiHandler: {fileID: 0}
-=======
->>>>>>> master
 --- !u!4 &1207591160
 Transform:
   m_ObjectHideFlags: 0
