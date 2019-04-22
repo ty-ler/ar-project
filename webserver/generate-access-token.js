@@ -6,3 +6,4 @@ var auth = {
 };
 
 fs.writeFileSync("./auth.json", JSON.stringify(auth));
+fs.writeFileSync("../game/Assets/Resources/auth.json", JSON.stringify(auth));

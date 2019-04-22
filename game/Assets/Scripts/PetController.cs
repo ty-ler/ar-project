@@ -7,6 +7,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 using TMPro;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 public class PetController : MonoBehaviour
 {
@@ -24,8 +26,8 @@ public class PetController : MonoBehaviour
     public bool wonGame;
     private float health;
     private float startHealth = 1f;
-    
 
+    private APIHandler apiHandler;
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
     private bool validPlacementPose;
@@ -47,6 +49,16 @@ public class PetController : MonoBehaviour
         ShowFood(false);
 
         timerText.SetText("Scanning...");
+
+        try
+        {
+            apiHandler = new APIHandler();
+            JObject obj = apiHandler.get("/problems", null);
+            Debug.Log(obj.ToString());
+        } catch (Exception e)
+        {
+            Debug.Log(e.ToString());
+        }
     }
 
     void Update()
