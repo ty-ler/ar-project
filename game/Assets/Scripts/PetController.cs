@@ -19,7 +19,6 @@ public class PetController : MonoBehaviour
     public TextMeshProUGUI timerText;
     public Image HealthBar;
     public Text HealthBarPercentage;
-
     public float correctAnswer;
     public bool timerGoing;
     public string currentTimerText;
@@ -38,6 +37,7 @@ public class PetController : MonoBehaviour
 
     void Start()
     {
+        apiHandler = new APIHandler();
         placed = false;
         validPlacementPose = false;
         wonGame = false;
@@ -202,7 +202,7 @@ public class PetController : MonoBehaviour
             Vector3 randomPosition = new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
             while (!validPos)
             {
-                Collider[] collisions = Physics.OverlapSphere(randomPosition, 3f);
+                Collider[] collisions = Physics.OverlapSphere(randomPosition, 5f);
                 foreach(Collider col in collisions)
                 {
                     if(col.CompareTag("Food"))

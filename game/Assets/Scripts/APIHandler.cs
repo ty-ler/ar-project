@@ -33,8 +33,7 @@ public class APIHandler
         {
             JObject result = get("/student_accounts", parameters);
             return (int)result["status"];
-        }
-        catch (Exception e)
+        } catch(Exception e)
         {
             Debug.Log(e);
             return 401;
