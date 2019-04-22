@@ -25,7 +25,6 @@ public class PetController : MonoBehaviour
     public bool wonGame;
     private float health;
     private float startHealth = 1f;
-    
 
     private APIHandler apiHandler;
     private ARSessionOrigin arOrigin;
@@ -53,8 +52,10 @@ public class PetController : MonoBehaviour
 
         try
         {
-            JObject result = apiHandler.get("/problems", null);
-        } catch(Exception e)
+            apiHandler = new APIHandler();
+            JObject obj = apiHandler.get("/problems", null);
+            Debug.Log(obj.ToString());
+        } catch (Exception e)
         {
             Debug.Log(e.ToString());
         }

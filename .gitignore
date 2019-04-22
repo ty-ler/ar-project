@@ -3,6 +3,9 @@ game/Assets/Wikitude
 game/Assets/Plugins/iOS/Wikitude.*
 game/Assets/Plugins/iOS/WikitudeSDK.* 
 game/Assets/GoogleARCore/
+
+auth.json*
+
 =============== 
 Unity generated
 ===============

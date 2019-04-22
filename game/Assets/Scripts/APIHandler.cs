@@ -13,7 +13,7 @@ using System;
 public class APIHandler
 {
 
-    private static string endpoint = "http://localhost:1337/api";
+    private static string endpoint = "http://192.168.0.6:1337/api";
     private string access_token;
 
     public APIHandler()
@@ -40,7 +40,7 @@ public class APIHandler
         }
     }
 
-    public async Task<int> SignUpAsync(string studentID,string fullname, string username,string password, string email,string teacherID)
+    public async Task<int> SignUpAsync(string studentID, string fullname, string username, string password, string email, string teacherID)
     {
         HttpClient client = new HttpClient();
         string call = endpoint + "/student_accounts";
@@ -59,7 +59,7 @@ public class APIHandler
         var responseString = await response.Content.ReadAsStringAsync();
 
         return (int)response.StatusCode;
-        
+
 
     }
 
@@ -67,9 +67,9 @@ public class APIHandler
     {
         string call = endpoint + path + "?access_token=" + access_token;
 
-        if(parameters != null && parameters.Count > 0)
+        if (parameters != null && parameters.Count > 0)
         {
-            foreach(KeyValuePair<string, string> entry in parameters)
+            foreach (KeyValuePair<string, string> entry in parameters)
             {
                 call += $"&{entry.Key}={entry.Value}";
             }
@@ -94,14 +94,14 @@ public class APIHandler
 
     private void LoadAcessToken()
     {
-        try {
-            using (StreamReader reader = new StreamReader("../webserver/auth.json"))
-            {
-                string json = reader.ReadToEnd();
-                Auth auth = JsonUtility.FromJson<Auth>(json);
-                access_token = auth.access_token;
-            }
-        } catch(FileLoadException e)
+        try
+        {
+            TextAsset authFile = Resources.Load<TextAsset>("auth");
+            string json = authFile.text;
+            Auth auth = JsonUtility.FromJson<Auth>(json);
+            access_token = auth.access_token;
+        }
+        catch (FileLoadException e)
         {
             Debug.Log(e.Message);
         }
