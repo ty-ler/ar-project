@@ -5,20 +5,15 @@ using UnityEngine;
 public class NotificationsManager : MonoBehaviour
 {
 
-    // Start is called before the first frame update
     void Start()
     {
-
+        ScheduleNotifcation("Your pet is getting hungry!", "Tap to start answering questions to feed them!", 5, 1440); // 1440 mintues = 24 hours
     }
 
-    // Update is called once per frame
-    void Update()
+    void ScheduleNotifcation(string title, string message, int id, int delay)
     {
-        
+        NativeToolkit.ScheduleLocalNotification(title, message, id, delay, "default_sound", true, "ic_notification", "ic_notification_large");
     }
 
-    void HandleAppOpened()
-    {
-        NativeToolkit.ScheduleLocalNotification("Test Noti", "testing!", 5, 1, "default_sound", true, "ic_notification", "ic_notification_large");
-    }
+
 }
