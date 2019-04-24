@@ -246,10 +246,10 @@ public class PetController : MonoBehaviour
     {
         return UnityEngine.Random.Range(-1f, 1f);
     }
-    public void OnDamage() {
+    public float OnDamage() {
         health = health - 0.1f;
         HealthBar.fillAmount = health;
-        Debug.Log(health);
-        HealthBarPercentage.text = (health / 1)*100 + "%";
+        HealthBarPercentage.text = Math.Round((health / 1)*100) + "%";
+        return health;
     }
 }

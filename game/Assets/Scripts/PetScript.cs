@@ -9,6 +9,7 @@ public class PetScript : MonoBehaviour
 
     private float correctAnswer;
     private PetController petController;
+    private float health;
     void Start()
     {
         winText.SetText("");
@@ -29,7 +30,16 @@ public class PetScript : MonoBehaviour
                 petController.wonGame = true;
             }
             else
-                petController.OnDamage();
+            {
+                health = petController.OnDamage();
+                if(health == 0.9f)
+                {
+                    winText.SetText("Game Over!\nTime: " + petController.currentTimerText);
+                    petController.timerGoing = false;
+                    petController.timerText.gameObject.SetActive(false);
+                }
+            }
+                
         }
     }
 }
