@@ -19,6 +19,7 @@ public class PetController : MonoBehaviour
     public TextMeshProUGUI timerText;
     public Image HealthBar;
     public Text HealthBarPercentage;
+
     public float correctAnswer;
     public bool timerGoing;
     public string currentTimerText;
@@ -26,7 +27,9 @@ public class PetController : MonoBehaviour
     private float health;
     private float startHealth = 1f;
 
+    private Vector3[] foodPositions;
     private APIHandler apiHandler;
+    private QAHandler qaHandler;
     private ARSessionOrigin arOrigin;
     private Pose placementPose;
     private bool validPlacementPose;
@@ -34,10 +37,21 @@ public class PetController : MonoBehaviour
     Vector3 petPlanePos;
     private float startTime;
 
+    private JArray problems;
+    private int currentProblem = -1;
+    public bool lastProblem = false;
 
     void Start()
     {
-        apiHandler = new APIHandler();
+        foodPositions = new Vector3[foods.Length];
+
+        int index = 0;
+        foreach(GameObject food in foods)
+        {
+            foodPositions[index] = food.transform.position;
+            index++;
+        }
+        qaHandler = FindObjectOfType<QAHandler>();
         placed = false;
         validPlacementPose = false;
         wonGame = false;
@@ -59,6 +73,22 @@ public class PetController : MonoBehaviour
         {
             Debug.Log(e.ToString());
         }
+
+        problems = new JArray();
+        JObject p1 = new JObject();
+        p1.Add("prompt", "What is the square root of 49?");
+        p1.Add("solution", 7);
+        p1.Add("possible_solutions", new JArray(new float[] { 7, 8, 6.5f }));
+
+        JObject p2 = new JObject();
+        p2.Add("prompt", "What is the square root of 9?");
+        p2.Add("solution", 3);
+        p2.Add("possible_solutions", new JArray(new float[] { 1, 2, 3 }));
+
+        problems.Add(p1);
+        problems.Add(p2);
+
+        nextQuestion();
     }
 
     void Update()
@@ -70,9 +100,9 @@ public class PetController : MonoBehaviour
         {
             if (!placed && !wonGame) {
                 PlacePet();
+                ShowFood(true); 
                 PlaceFood();
-                ShowFood(true);
-                correctAnswer = 7;
+                //correctAnswer = 7;
                 startTime = Time.time;
                 timerGoing = true;
                 timerText.SetText("");
@@ -170,9 +200,9 @@ public class PetController : MonoBehaviour
     {
         placed = true;
 
-        Vector3 placePosePos = placementPose.position;
+        Vector3 placePosePos = new Vector3(placementPose.position.x, placementPose.position.y - 1f, placementPose.position.z);
 
-        petPlanePos = new Vector3(placePosePos.x, placePosePos.y - 1f, placePosePos.z) + placementPose.forward;
+        petPlanePos = placePosePos + placementPose.forward;
 
         placementPose.position = petPlanePos;
 
@@ -186,23 +216,17 @@ public class PetController : MonoBehaviour
 
     void PlaceFood()
     {
-        Vector3 catPos = placementPose.position;
+        Vector3 catPos = petPlanePos;
 
-        GameObject cherry = foods[0];
-        GameObject cake = foods[1];
-        GameObject hamburger = foods[2];
-
-        cherry.GetComponent<FoodScript>().setValue(6.5f);
-        cake.GetComponent<FoodScript>().setValue(8f);
-        hamburger.GetComponent<FoodScript>().setValue(7f);
-
-        foreach(GameObject food in foods)
+        int index = 0;
+        foreach (GameObject food in foods)
         {
+            food.transform.position = foodPositions[index];
             bool validPos = false;
             Vector3 randomPosition = new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
             while (!validPos)
             {
-                Collider[] collisions = Physics.OverlapSphere(randomPosition, 5f);
+                Collider[] collisions = Physics.OverlapSphere(randomPosition, .3f);
                 foreach(Collider col in collisions)
                 {
                     if(col.CompareTag("Food"))
@@ -225,6 +249,8 @@ public class PetController : MonoBehaviour
             {
                 food.transform.position += randomPosition;
             }
+
+            index++;
         }
     }
 
@@ -251,5 +277,39 @@ public class PetController : MonoBehaviour
         HealthBar.fillAmount = health;
         HealthBarPercentage.text = Math.Round((health / 1)*100) + "%";
         return health;
+    }
+
+    public void nextQuestion()
+    {
+        // If currentProblem = -1, the game has not initialized yet.
+        currentProblem += 1;
+
+        if (currentProblem == problems.Count-1)
+        {
+            lastProblem = true;
+        }
+
+        JObject problem = (JObject)problems[currentProblem];
+
+        string prompt = (string)problem["prompt"];
+        float solution = (float)problem["solution"];
+        float[] possible_solutions = ((JArray)problem["possible_solutions"]).ToObject<float[]>();
+
+        qaHandler.questionText.text = prompt;
+        correctAnswer = solution; 
+
+        int index = 0;
+        foreach (Text solutionText in qaHandler.possible_solutions)
+        {
+            foods[index].GetComponent<FoodScript>().setValue(possible_solutions[index]); // Set the value on the actual GameObject
+            solutionText.text = possible_solutions[index].ToString(); // Set the text of each option on the QAPanel
+            index++;
+        }
+
+        if (placed)
+        {
+            ShowFood(true);
+            PlaceFood();
+        }
     }
 }
