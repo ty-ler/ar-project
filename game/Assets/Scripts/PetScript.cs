@@ -22,10 +22,6 @@ public class PetScript : MonoBehaviour
             other.gameObject.SetActive(false);
             float foodValue = other.gameObject.GetComponent<FoodScript>().value;
             if (foodValue == petController.correctAnswer) {
-                //winText.SetText("Correct Answer!\nTime: " + petController.currentTimerText);
-                //petController.timerGoing = false;
-                //petController.timerText.gameObject.SetActive(false);
-                //petController.wonGame = true;
                 if(petController.lastProblem)
                 {
                     winText.SetText("Game Finished!\nTime: " + petController.currentTimerText);
