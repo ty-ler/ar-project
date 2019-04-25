@@ -7,26 +7,36 @@ public class PetScript : MonoBehaviour
 {
     public TextMeshProUGUI winText;
 
-    private float correctAnswer;
     private PetController petController;
     void Start()
     {
         winText.SetText("");
         petController = FindObjectOfType<PetController>();
-        correctAnswer = petController.correctAnswer;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Food"))
+        Debug.Log("HITTING: " + other.ToString() + ", Tag: " + other.tag);
+        if(other.CompareTag("Food"))
         {
             other.gameObject.SetActive(false);
             float foodValue = other.gameObject.GetComponent<FoodScript>().value;
-            if (foodValue == correctAnswer) {
-                winText.SetText("Correct Answer!\nTime: " + petController.currentTimerText);
-                petController.timerGoing = false;
-                petController.timerText.gameObject.SetActive(false);
-                petController.wonGame = true;
+            if (foodValue == petController.correctAnswer) {
+                //winText.SetText("Correct Answer!\nTime: " + petController.currentTimerText);
+                //petController.timerGoing = false;
+                //petController.timerText.gameObject.SetActive(false);
+                //petController.wonGame = true;
+                if(petController.lastProblem)
+                {
+                    winText.SetText("Game Finished!\nTime: " + petController.currentTimerText);
+                    petController.timerGoing = false;
+                    petController.timerText.gameObject.SetActive(false);
+                    petController.wonGame = true;
+                }
+                else
+                {
+                   petController.nextQuestion();
+                }
             }
             else
                 petController.OnDamage();
