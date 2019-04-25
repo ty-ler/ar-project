@@ -1020,7 +1020,7 @@ GameObject:
   - component: {fileID: 532489629}
   - component: {fileID: 532489628}
   m_Layer: 5
-  m_Name: Panel2
+  m_Name: BodyPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1414,9 +1414,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 604f81d7913c84d96b19cb8b094cb7f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Panel: {fileID: 1453489629}
+  panel: {fileID: 1453489629}
   button: {fileID: 1647095889}
-  Question: {fileID: 1864075087}
+  questionText: {fileID: 1864075087}
+  possible_solutions:
+  - {fileID: 675757480}
+  - {fileID: 1608913835}
+  - {fileID: 783081061}
 --- !u!114 &671366159 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1226567172802087637, guid: c22803a3788f52546b2602c10a8497ea,
@@ -1499,7 +1503,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 7
+  m_Text: 
 --- !u!222 &675757481
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1916,7 +1920,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 6.5
+  m_Text: 
 --- !u!222 &783081062
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2819,7 +2823,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 8
+  m_Text: 
 --- !u!222 &1608913836
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3067,7 +3071,7 @@ GameObject:
   - component: {fileID: 1864075088}
   - component: {fileID: 1864075087}
   m_Layer: 5
-  m_Name: Text
+  m_Name: QuestionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3125,7 +3129,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: What is the square root of 49?
+  m_Text: 
 --- !u!222 &1864075088
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3290,7 +3294,7 @@ GameObject:
   - component: {fileID: 2108235079}
   - component: {fileID: 2108235078}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: HeaderPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
