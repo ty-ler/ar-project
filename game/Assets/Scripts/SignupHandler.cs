@@ -25,8 +25,6 @@ public class SignupHandler : MonoBehaviour
         Email.onEndEdit.AddListener(IsValidEmail);
         BackButton.onClick.AddListener(LoadMainMenu);
         SignUpButton.onClick.AddListener(Signup);
-       
-
     }
 
     // Update is called once per frame
