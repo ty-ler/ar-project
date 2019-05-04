@@ -35,6 +35,7 @@ public class PetScript : MonoBehaviour
                 else
                 {
                    petController.nextQuestion();
+
                 }
             }
             else

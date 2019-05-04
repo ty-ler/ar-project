@@ -9,6 +9,9 @@ using System;
 using TMPro;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Firebase;
+using Firebase.Unity.Editor;
+using Firebase.Database;
 
 public class PetController : MonoBehaviour
 {
@@ -45,6 +48,26 @@ public class PetController : MonoBehaviour
 
     void Start()
     {
+        //FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://ar-project-d52cb.firebaseio.com/");
+
+        //DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
+
+        //reference.Child("test").GetValueAsync().ContinueWith(task =>
+        //{ 
+        //    if(task.IsFaulted)
+        //    {
+        //        Debug.Log("Error!!!!!");
+        //    } else if(task.IsCompleted)
+        //    {
+        //        DataSnapshot snapshot = task.Result;
+                
+        //        Debug.Log(snapshot.Value);
+        //    } else if(task.IsCanceled)
+        //    {
+        //        Debug.Log("Task cancelled!!!!!");
+        //    }
+        //});
+
         foodPositions = new Vector3[foods.Length];
 
         int index = 0;

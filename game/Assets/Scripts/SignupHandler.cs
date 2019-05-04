@@ -18,6 +18,7 @@ public class SignupHandler : MonoBehaviour
     public Text WarningText;
     public Button BackButton;
 
+    private FirebaseManager firebase;
 
     // Start is called before the first frame update
     void Start()
@@ -25,13 +26,11 @@ public class SignupHandler : MonoBehaviour
         Email.onEndEdit.AddListener(IsValidEmail);
         BackButton.onClick.AddListener(LoadMainMenu);
         SignUpButton.onClick.AddListener(Signup);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        
+        firebase = new FirebaseManager();
 
     }
+
     void IsValidEmail(string email)
     {
         try 
@@ -50,14 +49,19 @@ public class SignupHandler : MonoBehaviour
         SceneManager.LoadScene("main_menu");
     }
     async void Signup() {
-        APIHandler api = new APIHandler();
-        int status = await api.SignUpAsync(studentID.text,Fullname.text,Username.text,Password.text,Email.text,teacherID.text);
+        //APIHandler api = new APIHandler();
+        //int status = await api.SignUpAsync(studentID.text,Fullname.text,Username.text,Password.text,Email.text,teacherID.text);
 
-        if (status == 200) {
-            SceneManager.LoadScene("main_menu");
-        }
-        if (status == 400) {
-            WarningText.text = "failed to signup";
-        }
+        //if (status == 200) {
+        //    SceneManager.LoadScene("main_menu");
+        //}
+        //if (status == 400) {
+        //    WarningText.text = "failed to signup";
+        //}
+
+        string email = Email.text;
+        string password = Password.text;
+
+        await firebase.SignUp(email, password);
     }
 }

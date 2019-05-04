@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -10,16 +11,21 @@ public class LoginHandler : MonoBehaviour
   
     public InputField EmailField; 
     public InputField PasswordField;
-    public Button LButton;
+    public Button SignUpButton;
+    public Button LoginButton;
     public Text LoginNotification;
     public Button backButton;
+
+    private FirebaseManager firebase;
 
     void Start()
     {
         EmailField.onValueChanged.AddListener(ClearWarning);
         PasswordField.onValueChanged.AddListener(ClearWarning);
-        LButton.onClick.AddListener(LoginProcess);
+        LoginButton.onClick.AddListener(Login);
+        SignUpButton.onClick.AddListener(SignUp);
         backButton.onClick.AddListener(LoadMainMenu);
+        firebase = new FirebaseManager();
     }
 
     private void ClearWarning(string arg0)
@@ -30,34 +36,39 @@ public class LoginHandler : MonoBehaviour
         SceneManager.LoadScene("main_menu");
     }
 
-    // Update is called once per frame
-    void Update()
+    async void Login()
     {
-        
-    }
-    void LoginProcess()
-    {
-        APIHandler api = new APIHandler();
-        MainMenuController main = new MainMenuController();
-        int status = api.Login(EmailField.text, PasswordField.text);
+        string email = EmailField.text;
+        string password = PasswordField.text;
 
-        if (status == 200)
+        await firebase.SignIn(email, password);
+
+        if (firebase.auth.CurrentUser != null)
         {
             SceneManager.LoadScene("pet");
-        }
-        if (status == 203)
+        } else
         {
-            LoginNotification.text = "Username and password are incorrect";
-
-
+            LoginNotification.text = "Email/Password incorrect. Try again.";
         }
-        if (status == 204)
-        {
-            LoginNotification.text = "The entered username does not exist";
-        }
-
     }
-  
+
+    async void SignUp()
+    {
+        string email = EmailField.text;
+        string password = PasswordField.text;
+
+        bool result = await firebase.SignUp(email, password);
+
+        Debug.Log(result);
+
+        if(result)
+        {
+            LoginNotification.text = "Account created successfully!";
+        } else
+        {
+            LoginNotification.text = "An error has occurred. Please try again.";
+        }
+    }
 }
 
 
