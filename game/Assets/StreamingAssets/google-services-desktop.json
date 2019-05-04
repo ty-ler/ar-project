@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "345398651026",
+    "firebase_url": "https://ar-project-d52cb.firebaseio.com",
+    "project_id": "ar-project-d52cb",
+    "storage_bucket": "ar-project-d52cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345398651026:android:650b9f97bf55d33a",
+        "android_client_info": {
+          "package_name": "com.ateam.mathar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345398651026-lg26nf05pch345kqm5dp8lirrgo9ahtk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlUcuLA2-ucotRj6Z0QzJhhBd-dtiVKdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345398651026-lg26nf05pch345kqm5dp8lirrgo9ahtk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "345398651026-79se7u8fjkre8oavs41djncojql3i45a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ateam.mathar"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
