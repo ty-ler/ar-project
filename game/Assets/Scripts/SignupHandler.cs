@@ -26,8 +26,9 @@ public class SignupHandler : MonoBehaviour
         Email.onEndEdit.AddListener(IsValidEmail);
         BackButton.onClick.AddListener(LoadMainMenu);
         SignUpButton.onClick.AddListener(Signup);
-
+        
         firebase = new FirebaseManager();
+
     }
 
     void IsValidEmail(string email)

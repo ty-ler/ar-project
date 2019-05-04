@@ -8,6 +8,7 @@ public class PetScript : MonoBehaviour
     public TextMeshProUGUI winText;
 
     private PetController petController;
+    private float health;
     void Start()
     {
         winText.SetText("");
@@ -22,9 +23,11 @@ public class PetScript : MonoBehaviour
             other.gameObject.SetActive(false);
             float foodValue = other.gameObject.GetComponent<FoodScript>().value;
             if (foodValue == petController.correctAnswer) {
+                petController.correctAnswerCount++;
+                petController.totalQuestions.text = petController.correctAnswerCount + "/" + petController.totalAnswerCount;
                 if(petController.lastProblem)
                 {
-                    winText.SetText("Game Finished!\nTime: " + petController.currentTimerText);
+                    winText.SetText("Game Finished!\nTime: " + petController.currentTimerText + "\nCorrect Answers:" + petController.totalQuestions.text);
                     petController.timerGoing = false;
                     petController.timerText.gameObject.SetActive(false);
                     petController.wonGame = true;
@@ -36,7 +39,17 @@ public class PetScript : MonoBehaviour
                 }
             }
             else
-                petController.OnDamage();
+            {
+                health = petController.OnDamage();
+                if(health == 0.0f)
+                {
+                    winText.SetText("Game Over!\nTime: " + petController.currentTimerText + "/nCorrect Answers:" + petController.totalQuestions);
+                    petController.timerGoing = false;
+                    petController.timerText.gameObject.SetActive(false);
+                    petController.wonGame = true;
+                }
+            }
+                
         }
     }
 }

@@ -22,13 +22,15 @@ public class PetController : MonoBehaviour
     public TextMeshProUGUI timerText;
     public Image HealthBar;
     public Text HealthBarPercentage;
-
+    public Text totalQuestions;
     public float correctAnswer;
     public bool timerGoing;
     public string currentTimerText;
     public bool wonGame;
     private float health;
     private float startHealth = 1f;
+    public int correctAnswerCount = 0;
+    public int totalAnswerCount = 0;
 
     private Vector3[] foodPositions;
     private APIHandler apiHandler;
@@ -83,6 +85,7 @@ public class PetController : MonoBehaviour
         petPlane.SetActive(false);
         HealthBar.fillAmount = startHealth;
         health = startHealth;
+
         ShowFood(false);
 
         timerText.SetText("Scanning...");
@@ -110,7 +113,8 @@ public class PetController : MonoBehaviour
 
         problems.Add(p1);
         problems.Add(p2);
-
+        totalAnswerCount = problems.Count;
+        totalQuestions.text = correctAnswerCount + "/" + totalAnswerCount;
         nextQuestion();
     }
 
@@ -295,11 +299,11 @@ public class PetController : MonoBehaviour
     {
         return UnityEngine.Random.Range(-1f, 1f);
     }
-    public void OnDamage() {
+    public float OnDamage() {
         health = health - 0.1f;
         HealthBar.fillAmount = health;
-        Debug.Log(health);
-        HealthBarPercentage.text = (health / 1)*100 + "%";
+        HealthBarPercentage.text = Math.Round((health / 1)*100) + "%";
+        return health;
     }
 
     public void nextQuestion()
