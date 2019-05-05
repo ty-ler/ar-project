@@ -40,3 +40,9 @@ OS generated
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+============
+Teacher App
+============
+teacher-app/node_modules
+teacher-app/src/firebase.json

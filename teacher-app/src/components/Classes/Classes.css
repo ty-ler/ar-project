@@ -1,0 +1,36 @@
+.no-classes {
+  text-align: center;
+}
+
+.classes-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.classes-body {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.add-class-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.new-class-form { 
+  margin: 0 auto;
+  border-radius: .5rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.class-item {
+  display: block;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: .5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Jumbotron, Container, Table} from 'react-bootstrap';
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 class SeeScores extends Component{
     render(){

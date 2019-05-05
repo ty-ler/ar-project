@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Form, Row, Col, Button} from 'react-bootstrap';
-import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 class QuestionRow extends Component{
     constructor(props) {
