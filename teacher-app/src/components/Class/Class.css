@@ -1,0 +1,11 @@
+.class-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.add-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
