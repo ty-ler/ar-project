@@ -173,12 +173,12 @@ export default class ClassStudents extends Component {
         });
       } else {
         this.setState({
-          studentsInClass: [{}]
+          studentsInClass: []
         })
       }
     } else {
       this.setState({
-        studentsInClass: [{}]
+        studentsInClass: []
       });
     }
   }
@@ -218,7 +218,8 @@ export default class ClassStudents extends Component {
 
     const selectedStudent = this.state.selectedStudents;
     const studentsInClass = this.state.studentsInClass;
-
+    console.log(studentsInClass);
+    
     var students = studentsInClass.map(val => val.id);
 
     selectedStudent.map(selectedStudent => {
