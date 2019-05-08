@@ -15,3 +15,7 @@ a:hover {
   display: flex;
   justify-content: flex-end;
 }
+
+.modal-content {
+  margin-top: 10rem;
+}

@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {Jumbotron, Container, Button, FormControl, FormGroup, FormLabel} from 'react-bootstrap';
+import {Jumbotron, Container, Button, FormControl, FormGroup, FormLabel, Modal, ModalTitle, ModalBody, ModalFooter, Form} from 'react-bootstrap';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import './Classes.css';
 import Loading from '../Loading/Loading';
+import ModalHeader from 'react-bootstrap/ModalHeader';
+import Controls from "../Controls/Controls";
 
 const uuidv4 = require("uuid/v4");
 
@@ -23,7 +25,10 @@ export default class Classes extends Component{
 		this.loadClasses = this.loadClasses.bind(this);
 		this.showNewClassForm = this.showNewClassForm.bind(this);
 		this.hideNewClassForm = this.hideNewClassForm.bind(this);
-		this.addNewClass = this.addNewClass.bind(this);
+		this.handleAddClass = this.handleAddClass.bind(this);
+		this.addClass = this.addClass.bind(this);
+
+		this.classNameField = React.createRef();
 	}
 
 	componentDidMount() {
@@ -31,45 +36,50 @@ export default class Classes extends Component{
 	}
 
 	render(){
-
 		if(this.state.loading) {
 			return <Loading/>;
 		}
 
 		return(
 			<Container className="page-content">
-				<div className="classes-controls">
-					<h2>Classes</h2>
-
-					<div className="add-class-btn-container">
-						<Button size="sm" variant="success" onClick={this.showNewClassForm}>Add Class</Button>
-					</div>
-				</div>
+				<Controls title="Classes">
+					<Button size="sm" variant="success" onClick={this.showNewClassForm}>Add Class</Button>
+				</Controls>
 				
 				<div className="classes-body">
 					{this.renderClasses()}
 				</div>
+
+				<Modal show={this.state.newClass} onHide={this.hideNewClassForm}>
+          <ModalHeader closeButton onHide={this.hideNewClassForm}>
+            <ModalTitle>Add a Class</ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+						<Form>
+							<FormGroup>
+								<FormLabel><strong>Class Name</strong></FormLabel>
+								<FormControl ref={this.classNameField} placeholder="Name"/>
+							</FormGroup>
+						</Form>
+					</ModalBody>
+          <ModalFooter>
+            <Button variant="secondary" onClick={this.hideNewClassForm} size="sm">
+              Close
+            </Button>
+            <Button variant="primary" onClick={this.handleAddClass} size="sm">
+              Confirm
+            </Button>
+          </ModalFooter>
+        </Modal>
 			</Container>
 		)
 	}
 
 	renderClasses() {
 		const classes = this.state.classes;
-		const newClass = this.state.newClass;
 
-		if(classes.length && newClass) {
-			return (
-				<div>
-					<NewClassForm hideNewClassForm={this.hideNewClassForm} addNewClass={this.addNewClass}/>
-					{classes}
-				</div>
-			);
-		} else if(classes.length) {
+		if(classes.length) {
 			return classes;
-		} else if(newClass) {
-			return (
-				<NewClassForm hideNewClassForm={this.hideNewClassForm} addNewClass={this.addNewClass}/>
-			);
 		} else {
 			return (
 				<div className="no-classes">
@@ -95,7 +105,7 @@ export default class Classes extends Component{
 		const db = firebase.database();
 		const userId = this.state.userId;
 
-		const userRef = db.ref(`users/${userId}`);
+		const userRef = db.ref(`teachers/${userId}`);
 
 		const classesRef = userRef.child("classes");
 
@@ -109,7 +119,7 @@ export default class Classes extends Component{
 					const c = classesData[key];
 
 					classes.push(
-						<Link to={`/class/${key}`} className="class-item">
+						<Link key={key} to={`/class/${key}`} className="class-item">
 							{c.name}
 						</Link>
 					);
@@ -119,56 +129,36 @@ export default class Classes extends Component{
 					classes: classes,
 					loading: false
 				});
+			} else {
+				this.setState({
+					loading: false
+				});
 			}
 		});
 	}
 
-	addNewClass(className) {
+	handleAddClass() {
+		const className = this.classNameField.current.value;
+
+		if(className.trim() != "") {
+			this.addClass(className);
+		} else {
+			this.hideNewClassForm();
+		}
+	}
+
+	addClass(className) {
 		const db = firebase.database();
 		const userId = this.state.userId;
 		const classId = uuidv4();
 
-		const classesRef = db.ref(`users/${userId}/classes`);
+		const classesRef = db.ref(`teachers/${userId}/classes`);
 		
 		
 		classesRef.child(classId).set({
 			name: className
 		}).then(res => {
-			console.log(res);
-
 			this.hideNewClassForm();
 		});
-	}
-}
-
-class NewClassForm extends Component {
-	
-	constructor(props) {
-		super(props);
-
-		this.handleAddNewClass = this.handleAddNewClass.bind(this);
-		
-		this.classNameField = React.createRef();
-	}
-	
-	render() {
-		return (
-			<form className="new-class-form">
-				<FormGroup>
-					<FormLabel><strong>Class Name</strong></FormLabel>
-					<FormControl ref={this.classNameField}/>
-				</FormGroup>
-				<div className="justify-children-end">
-					<Button className="mr-2" onClick={this.handleAddNewClass}>Add</Button>
-					<Button variant="danger" onClick={this.props.hideNewClassForm}>Cancel</Button>
-				</div>
-			</form>
-		);
-	}
-
-	handleAddNewClass() {
-		const className = this.classNameField.current.value;
-
-		this.props.addNewClass(className);
 	}
 }

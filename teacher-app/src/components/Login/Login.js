@@ -22,7 +22,7 @@ export default class Login extends Component{
 					<h4 className="login-title">Login</h4>
 					<FormGroup>
 						<FormLabel><strong>Email</strong></FormLabel>
-						<FormControl type="text" ref={this.emailField} autoComplete="email"/>
+						<FormControl type="email" ref={this.emailField} autoComplete="email"/>
 					</FormGroup>
 					<FormGroup>
 						<FormLabel><strong>Password</strong></FormLabel>
@@ -39,7 +39,22 @@ export default class Login extends Component{
 	login() {
 		const email = this.emailField.current.value;
 		const password = this.passwordField.current.value;
-		
-		firebase.auth().signInWithEmailAndPassword(email, password);
+
+		firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+			.then(function() {
+				// Existing and future Auth states are now persisted in the current
+				// session only. Closing the window would clear any existing state even
+				// if a user forgets to sign out.
+				// ...
+				// New sign-in will be persisted with session persistence.
+				return firebase.auth().signInWithEmailAndPassword(email, password);
+			})
+			.catch(function(error) {
+				// Handle Errors here.
+				var errorCode = error.code;
+				var errorMessage = error.message;
+
+				console.log(error);
+			});
 	}
 }

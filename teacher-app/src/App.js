@@ -4,7 +4,8 @@ import AddQuestions from './components/AddQuestions';
 import SeeScores from './components/SeeScores';
 import Login from "./components/Login/Login";
 import './App.css';
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-table/dist/bootstrap-table.min.css";
 import * as firebase from 'firebase/app';
 import "firebase/app";
 import "firebase/database";
@@ -12,6 +13,8 @@ import config from "./firebase.json";
 import Navbar from './components/TeacherNavbar/TeacherNavbar';
 import Classes from './components/Classes/Classes';
 import Class from './components/Class/Class';
+import Students from './components/Students/Students';
+import Loading from './components/Loading/Loading';
 
 class App extends Component {
 
@@ -20,7 +23,9 @@ class App extends Component {
 
     this.state = {
       authenticated: false,
-      userId: null
+      userId: null,
+      loading: true,
+      authUser: null
     };
 
     this.handleAuthStateChanged = this.handleAuthStateChanged.bind(this);
@@ -42,23 +47,23 @@ class App extends Component {
   }
 
   renderApp() {
+    if(this.state.loading) {
+      return <Loading/>
+    }
+
     if(this.state.authenticated) {
       return (
         <Switch>
           <Route path="/" exact render={() => <Classes userId={this.state.userId} />} />
           <Route path="/class/:id" exact render={() => <Class userId={this.state.userId}/>}/>
+          <Route path="/students" exact render={() => <Students/>} />
 
+          {/* 404 redirect */}
           <Redirect to="/"/>
         </Switch>
       );
     } else {
-      return (
-        <Switch>
-          <Route path="/login" exact component={Login}/>
-
-          <Redirect to="/login"/>
-        </Switch>
-      )
+      return <Login/>;
     }
   }
 
@@ -67,6 +72,9 @@ class App extends Component {
 
     firebase.auth().onAuthStateChanged(this.handleAuthStateChanged);
 
+    this.setState({
+      loading: false
+    });
   }
 
   handleAuthStateChanged(user) {
@@ -89,13 +97,14 @@ class App extends Component {
       const db = firebase.database();
       const userId = user.uid;
 
-      const userRef = db.ref(`users/${userId}`);
+      const userRef = db.ref(`teachers/${userId}`);
       
       userRef.once("value", (snap) => {
         if(!snap.exists()) {
           userRef.set({
-            display_name: "New User",
-            uid: userId
+            display_name: "New Teacher",
+            uid: userId,
+            type: "teacher"
           });
         }
       });

@@ -44,6 +44,7 @@ export default class TeacherNavbar extends Component{
 				<NavbarCollapse id="teacher-nav">
 					<Nav className="mr-auto">
 						<NavbarLink to="/">Classes</NavbarLink>
+						<NavbarLink to="/students">Students</NavbarLink>
 					</Nav>
 					<Button variant="danger" size="md" onClick={this.logout}>Logout</Button>
 				</NavbarCollapse>

@@ -1,0 +1,11 @@
+.controls-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.controls-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

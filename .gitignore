@@ -46,3 +46,4 @@ Teacher App
 ============
 teacher-app/node_modules
 teacher-app/src/firebase.json
+teacher-app/src/firebase-admin-sdk.json
