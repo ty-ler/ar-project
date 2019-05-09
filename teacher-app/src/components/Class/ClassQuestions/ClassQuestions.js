@@ -97,13 +97,20 @@ export default class ClassStudents extends Component {
           </ToolkitProvider> */}
           <Modal show={this.state.modalOpen} onHide={this.handleHideAddQuestionModal}>
             <ModalHeader closeButton onHide={this.handleHideAddQuestionModal}>
-              <ModalTitle>Upload Question(s)</ModalTitle>
+              <ModalTitle>Add a Question</ModalTitle>
             </ModalHeader>
             <ModalBody>
               <FormGroup>
-                <FormControl type="file" accept="image/x-png,image/gif,image/jpeg" onChange={this.handleChange} required></FormControl>
+                <FormLabel><strong>Question Image</strong></FormLabel>
+                <div style={{display: "flex"}}>
+                  <FormControl type="file" accept="image/x-png,image/gif,image/jpeg" onChange={this.handleChange} required></FormControl>
+                  <Button size="sm" onClick={this.handleUploadPicture}>Upload</Button>
+                </div>
               </FormGroup>
-
+              <FormGroup>
+                <FormLabel><strong>Question Solution</strong></FormLabel>
+                <FormControl type="text"/>
+              </FormGroup>
             </ModalBody>
             <ModalFooter>
               <Button variant="secondary" onClick={this.handleHideAddQuestionModal} size="sm">
@@ -133,8 +140,8 @@ export default class ClassStudents extends Component {
     const image = e.target.files[0];
     console.log(image);
     this.setState({
-      image
-    })
+      image: image
+    });
   }
   handleUploadPicture = () => {
     const { image } = this.state;
