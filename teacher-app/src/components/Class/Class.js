@@ -49,7 +49,10 @@ class Class extends Component {
         <h2>{this.state.classData.name}</h2>
         <hr/>
 
-        <ClassQuestions/>
+        <ClassQuestions
+          userId={this.state.userId}
+          classId={this.state.classId}
+        />
         
         <hr/>
 

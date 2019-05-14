@@ -1,4 +1,4 @@
-.loading {
+.loading-page {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,6 +6,13 @@
   text-align: center;
 }
 
-.loading * {
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.loading-page *, .loading * {
   flex: 1;
 }

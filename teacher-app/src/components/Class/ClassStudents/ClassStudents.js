@@ -75,7 +75,6 @@ export default class ClassStudents extends Component {
       }
     ];
 
-
     return (
       <div id="students-in-class">
         <Controls title="Students">
@@ -89,6 +88,7 @@ export default class ClassStudents extends Component {
           columns={ studentColumns }
           search
           sort
+          bootstrap4
         >
           {
             props => (
@@ -104,7 +104,7 @@ export default class ClassStudents extends Component {
           }
         </ToolkitProvider>
 
-        <Modal show={this.state.addStudent} onHide={this.handleHideAddStudentModal}>
+        <Modal show={this.state.addStudent} onHide={this.handleHideAddStudentModal} size="lg">
           <ModalHeader closeButton onHide={this.handleHideAddStudentModal}>
             <ModalTitle>Add a Student to {this.props.classData.name}</ModalTitle>
           </ModalHeader>
@@ -115,6 +115,7 @@ export default class ClassStudents extends Component {
               columns={ studentColumns }
               search
               sort
+              bootstrap4
             >
               {
                 props => (
@@ -155,19 +156,15 @@ export default class ClassStudents extends Component {
       const studentIds = this.props.classData.students;
       var studentsInClass = []; 
 
-      console.log(studentIds);
-
       allStudents.map(student => {
         const studentId = student.id;
         if(studentIds.includes(studentId)) {
-          console.log("STUDENT:", student);
           studentsInClass.push(student);
         }
       });
 
 
       if(studentsInClass.length) {
-        console.log("STUDENTS IN CLASS:", studentsInClass)
         this.setState({
           studentsInClass: studentsInClass
         });
@@ -218,7 +215,6 @@ export default class ClassStudents extends Component {
 
     const selectedStudent = this.state.selectedStudents;
     const studentsInClass = this.state.studentsInClass;
-    console.log(studentsInClass);
     
     var students = studentsInClass.map(val => val.id);
 
@@ -228,10 +224,18 @@ export default class ClassStudents extends Component {
 
     studentsInClassRef.set(students)
     .then(() => {
-      this.setState({
-        addStudent: false,
-        selectedStudents: []
-      }, this.getStudentsInClass);
+      var updateStudents = students.map(studentId => {
+        return db.ref(`students/${studentId}/classes/${classId}/`).set({
+          test: "test"
+        });
+      });
+
+      Promise.all(updateStudents).then(() => {
+        this.setState({
+          addStudent: false,
+          selectedStudents: []
+        }, this.getStudentsInClass);
+      });
     });
   }
 

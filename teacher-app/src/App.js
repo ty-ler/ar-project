@@ -3,9 +3,11 @@ import {BrowserRouter as Router,Route, Switch, withRouter, Redirect} from 'react
 import AddQuestions from './components/AddQuestions';
 import SeeScores from './components/SeeScores';
 import Login from "./components/Login/Login";
-import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-table/dist/bootstrap-table.min.css";
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import './App.css';
+
 import * as firebase from 'firebase/app';
 import "firebase/app";
 import "firebase/database";

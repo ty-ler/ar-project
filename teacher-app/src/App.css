@@ -19,3 +19,7 @@ a:hover {
 .modal-content {
   margin-top: 10rem;
 }
+
+.react-bootstrap-table table > tbody > tr > td:nth-child(1) > input[type=radio] {
+  margin-left: -.25rem;
+}
