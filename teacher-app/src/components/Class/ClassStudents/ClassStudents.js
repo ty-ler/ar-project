@@ -6,6 +6,7 @@ import Controls from "../../Controls/Controls";
 import * as firebase from 'firebase/app';
 import "firebase/database";
 import ModalHeader from 'react-bootstrap/ModalHeader';
+import { Link } from "react-router-dom";
 
 const { SearchBar } = Search;
 
@@ -44,6 +45,8 @@ export default class ClassStudents extends Component {
   }
 
   render() {
+    console.log(this.state.studentsInClass);
+
     const selectRow = {
       mode: "radio",
       style: { background: "#eee" },
@@ -58,6 +61,16 @@ export default class ClassStudents extends Component {
     };
 
     const studentColumns = [
+      {
+        dataField:"",
+        text: "Attempts",
+        sort: true,
+        formatter: (val, row, rowIndex) => {
+          const classId = this.props.classId;
+          const studentId = row.id;
+          return <Link to={`${classId}/${studentId}/attempts`}>Open</Link>
+        }
+      },
       {
         dataField: "firstName",
         text: "First Name",
@@ -156,7 +169,6 @@ export default class ClassStudents extends Component {
       const allStudents = this.props.studentsData;
       const studentIds = this.props.classData.students;
       var studentsInClass = []; 
-
       allStudents.map(student => {
         const studentId = student.id;
         if(studentIds.includes(studentId)) {

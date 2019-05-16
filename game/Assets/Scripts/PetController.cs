@@ -35,6 +35,7 @@ public class PetController : MonoBehaviour
     public bool wonGame;
     private float health;
     private float startHealth = 1f;
+    private float finishTime;
     public int correctAnswerCount = 0;
     public int totalQuestionCount = 0;
 
@@ -53,8 +54,8 @@ public class PetController : MonoBehaviour
     private JObject classData;
     private string[] solutions;
 
-    private JArray questions = new JArray();
-    private int currentProblem = -1;
+    public JArray questions = new JArray();
+    public int currentProblem = -1;
     public bool lastProblem = false;
 
     void Start()
@@ -119,10 +120,12 @@ public class PetController : MonoBehaviour
         if (placed && timerGoing)
         {
             float t = Time.time - startTime;
+            finishTime = t;
             string minutes = ((int)t / 60).ToString();
             string seconds = (t % 60).ToString("f0");
 
             currentTimerText = minutes + ":" + seconds;
+
             timerText.SetText(currentTimerText);
         }
     }
@@ -212,6 +215,7 @@ public class PetController : MonoBehaviour
         foreach (KeyValuePair<string, JToken> item in (JObject)classData["questions"])
         {
             JObject question = (JObject)item.Value;
+            question["correct"] = false;
             questions.Add(question);
         }
 
@@ -331,6 +335,17 @@ public class PetController : MonoBehaviour
 
     public void saveAttempt()
     {
-        
+        string studentId = firebase.auth.CurrentUser.UserId;
+        string attemptId = Guid.NewGuid().ToString();
+
+        Debug.Log(questions);
+        JObject attemptData = new JObject();
+
+        attemptData["finishTime"] = finishTime;
+        attemptData["date"] = DateTime.UtcNow.ToString();
+        attemptData["grade"] = (correctAnswerCount / totalQuestionCount) * 100;
+        attemptData["questions"] = questions;
+
+        firebase.set("students/" + studentId + "/classes/" + classId + "/attempts/" + attemptId, attemptData.ToString());
     }
 }

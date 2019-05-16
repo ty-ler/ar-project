@@ -7,6 +7,11 @@ a:hover {
   color: inherit;
 }
 
+table a{
+  text-decoration: initial;
+  color: #007bff;
+}
+
 .page-content {
   margin-top: 3rem;
 }

@@ -85,4 +85,9 @@ public class FirebaseManager
             return null;
         });
     }
+
+    public void set(string path, string json)
+    {
+        database.GetReference(path).SetRawJsonValueAsync(json);
+    }
 }

@@ -3,6 +3,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import { Button, Form, Modal, ModalTitle, ModalBody, ModalFooter, FormLabel, FormGroup, FormControl, InputGroup } from 'react-bootstrap';
 import Controls from "../../Controls/Controls";
+import { Link } from "react-router-dom";
 import * as firebase from 'firebase/app';
 import "firebase/database";
 import "firebase/storage";
@@ -415,14 +416,14 @@ export default class ClassQuestions extends Component {
     const classId = this.props.classId;
     const questionsRef = db.ref(`teachers/${userId}/classes/${classId}/questions`);
     const questionImageRef = storage.ref(`classes/${classId}/${questionImageName}`);
-    questionImageRef.delete().then(() => {
-      questionsRef.set(questionData).then(() => {
-        this.questionsTable.current.selectionContext.selected = [];
-        this.setState({
-          questions: questions          
-        });
+    // questionImageRef.delete().then(() => {
+    questionsRef.set(questionData).then(() => {
+      this.questionsTable.current.selectionContext.selected = [];
+      this.setState({
+        questions: questions          
       });
-    })
+    });
+    // })
   }
 
   handleSelectQuestion(question) {

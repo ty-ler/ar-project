@@ -21,7 +21,7 @@ class Class extends Component {
     this.state = {
       loading: true,
       userId: this.props.userId,
-      classId: this.props.match.params.id,
+      classId: this.props.match.params.classId,
       classData: {},
       addStudent: false,
       loadedStudents: false,

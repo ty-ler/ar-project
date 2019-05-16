@@ -17,6 +17,7 @@ import Classes from './components/Classes/Classes';
 import Class from './components/Class/Class';
 import Students from './components/Students/Students';
 import Loading from './components/Loading/Loading';
+import Attempts from './components/Attempts/Attempts';
 
 class App extends Component {
 
@@ -57,7 +58,8 @@ class App extends Component {
       return (
         <Switch>
           <Route path="/" exact render={() => <Classes userId={this.state.userId} />} />
-          <Route path="/class/:id" exact render={() => <Class userId={this.state.userId}/>}/>
+          <Route path="/class/:classId" exact render={() => <Class userId={this.state.userId}/>}/>
+          <Route path="/class/:classId/:studentId/attempts" exact render={() => <Attempts/>}/>
           <Route path="/students" exact render={() => <Students/>} />
 
           {/* 404 redirect */}
