@@ -258,7 +258,9 @@ export default class ClassQuestions extends Component {
       return (
         <FormGroup>
           <FormLabel><strong>Question Image:</strong></FormLabel>
-          <img src={this.state.image.url} className="question-image-preview"/>
+          <div style={{margin: "0 auto", minWidth: "100%"}}>
+            <img src={this.state.image.url} className="question-image-preview"/>
+          </div>
         </FormGroup>
       );
     }

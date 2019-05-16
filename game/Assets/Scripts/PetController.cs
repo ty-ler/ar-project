@@ -23,18 +23,20 @@ public class PetController : MonoBehaviour
     public GameObject petPlane;
     public GameObject[] foods;
     public RawImage QuestionImage;
+    public GameObject QuestionPanel;
+    public Button QuestionButton;
     public TextMeshProUGUI timerText;
     public Image HealthBar;
     public Text HealthBarPercentage;
-    public Text totalQuestions;
-    public float correctAnswer;
+    public TextMeshProUGUI totalQuestions;
+    public int correctSolutionIndex;
     public bool timerGoing;
     public string currentTimerText;
     public bool wonGame;
     private float health;
     private float startHealth = 1f;
     public int correctAnswerCount = 0;
-    public int totalAnswerCount = 0;
+    public int totalQuestionCount = 0;
 
     private Vector3[] foodPositions;
     private APIHandler apiHandler;
@@ -49,88 +51,80 @@ public class PetController : MonoBehaviour
     public static string teacherId;
     private FirebaseManager firebase;
     private JObject classData;
+    private string[] solutions;
 
     private JArray questions = new JArray();
     private int currentProblem = -1;
     public bool lastProblem = false;
 
-    async void Start()
+    void Start()
     {
+        QuestionButton.gameObject.SetActive(false);
         firebase = new FirebaseManager();
-        await loadClassData();
-        setupQuestions();
-        loadQuestionImage();
+        foods = GameObject.FindGameObjectsWithTag("Food");
+        
         foodPositions = new Vector3[foods.Length];
 
         int index = 0;
-        foreach(GameObject food in foods)
+        foreach (GameObject food in foods)
         {
-            foodPositions[index] = food.transform.position;
-            index++;
+            foodPositions[index] = food.transform.position;   
         }
+
         qaHandler = FindObjectOfType<QAHandler>();
         placed = false;
         validPlacementPose = false;
         wonGame = false;
         arOrigin = FindObjectOfType<ARSessionOrigin>();
-        //pet.SetActive(false);
-        //petPlane.SetActive(false);
-        //HealthBar.fillAmount = startHealth;
-        //health = startHealth;
+        pet.SetActive(false);
+        petPlane.SetActive(false);
+        HealthBar.fillAmount = startHealth;
+        health = startHealth;
 
         ShowFood(false);
 
         timerText.SetText("Scanning...");
 
-        //JObject p1 = new JObject();
-        //p1.Add("prompt", "What is the square root of 49?");
-        //p1.Add("solution", 7);
-        //p1.Add("possible_solutions", new JArray(new float[] { 7, 8, 6.5f }));
-
-        //JObject p2 = new JObject();
-        //p2.Add("prompt", "What is the square root of 9?");
-        //p2.Add("solution", 3);
-        //p2.Add("possible_solutions", new JArray(new float[] { 1, 2, 3 }));
-
-        //problems.Add(p1);
-        //problems.Add(p2);
-        //totalAnswerCount = problems.Count;
-        //totalQuestions.text = correctAnswerCount + "/" + totalAnswerCount;
-        nextQuestion();
+        loadClassData();
     }
 
     void Update()
     {
-        //UpdatePlacementPose();
-        //UpdatePlacementIndicator();
+        UpdatePlacementPose();
+        UpdatePlacementIndicator();
 
-        //if (validPlacementPose && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        //{
-        //    if (!placed && !wonGame) {
-        //        PlacePet();
-        //        ShowFood(true); 
-        //        PlaceFood();
-        //        //correctAnswer = 7;
-        //        startTime = Time.time;
-        //        timerGoing = true;
-        //        timerText.SetText("");
-        //    }
-        //    else if(placed && !wonGame)
-        //    {
-        //        pet.GetComponent<CatMoveTo>().StartMove(placementPose.position);
-        //    } 
-        //}
+        if (validPlacementPose && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            if (!placed && !wonGame)
+            {
+                QuestionButton.gameObject.SetActive(true);
+                PlacePet();
+                int index = 0;
+                foreach (string solution in solutions)
+                {
+                    foods[index].SetActive(true);
+                    index++;
+                }
+                PlaceFood();
+                startTime = Time.time;
+                timerGoing = true;
+                timerText.SetText("");
+            }
+            else if (placed && !wonGame)
+            {
+                pet.GetComponent<CatMoveTo>().StartMove(placementPose.position);
+            }
+        }
 
-        //if(placed && timerGoing)
-        //{
-        //    float t = Time.time - startTime;
-        //    string minutes = ((int)t / 60).ToString();
-        //    string seconds = (t % 60).ToString("f0");
+        if (placed && timerGoing)
+        {
+            float t = Time.time - startTime;
+            string minutes = ((int)t / 60).ToString();
+            string seconds = (t % 60).ToString("f0");
 
-        //    currentTimerText = minutes + ":" + seconds;
-        //    timerText.SetText(currentTimerText);
-        //}
-
+            currentTimerText = minutes + ":" + seconds;
+            timerText.SetText(currentTimerText);
+        }
     }
 
     void UpdatePlacementIndicator()
@@ -204,16 +198,12 @@ public class PetController : MonoBehaviour
         }
     }
 
-    async Task loadClassData()
+    async void loadClassData()
     {
 
         classData = await firebase.get("teachers/" + teacherId + "/classes/" + classId);
-        Debug.Log(classData);
-    }
-
-    void loadQuestionImage()
-    {
-        
+        setupQuestions();
+        nextQuestion();
     }
 
     void setupQuestions()
@@ -227,7 +217,7 @@ public class PetController : MonoBehaviour
 
         questions = new JArray(questions.OrderBy(obj => (int)obj["order"]));
 
-        Debug.Log(questions);
+        totalQuestionCount = questions.Count;
     }
 
 
@@ -245,7 +235,7 @@ public class PetController : MonoBehaviour
     {
         placed = true;
 
-        Vector3 placePosePos = new Vector3(placementPose.position.x, placementPose.position.y - 1f, placementPose.position.z);
+        Vector3 placePosePos = new Vector3(placementPose.position.x, placementPose.position.y - 1f, placementPose.position.z + .5f);
 
         petPlanePos = placePosePos + placementPose.forward;
 
@@ -266,35 +256,11 @@ public class PetController : MonoBehaviour
         int index = 0;
         foreach (GameObject food in foods)
         {
-            food.transform.position = foodPositions[index];
+            Debug.Log(food.transform.position.ToString() + ", " + foodPositions[index].ToString());
+            food.transform.position = new Vector3(0, 0.1f, 0);
             bool validPos = false;
             Vector3 randomPosition = new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
-            while (!validPos)
-            {
-                Collider[] collisions = Physics.OverlapSphere(randomPosition, .3f);
-                foreach(Collider col in collisions)
-                {
-                    if(col.CompareTag("Food"))
-                    {
-                        validPos = false;
-                    }
-                    else
-                    {
-                        validPos = true;
-                    }
-                }
-
-                if(!validPos)
-                {
-                    randomPosition = new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
-                }
-            }
-
-            if(validPos)
-            {
-                food.transform.position += randomPosition;
-            }
-
+            food.transform.position += randomPosition;
             index++;
         }
     }
@@ -315,7 +281,7 @@ public class PetController : MonoBehaviour
 
     float getRandomCoord()
     {
-        return UnityEngine.Random.Range(-1f, 1f);
+        return UnityEngine.Random.Range(-.9f, .9f);
     }
     public float OnDamage() {
         health = health - 0.1f;
@@ -333,29 +299,38 @@ public class PetController : MonoBehaviour
         {
             lastProblem = true;
         }
-
         JObject question = (JObject)questions[currentProblem];
 
-        Debug.Log(question);
-
         string imageUrl = (string)question["imageUrl"];
-        string[] solutions = question["solutions"].ToObject<string[]>();
-        correctAnswer = (int)question["selectedSolution"];
+        solutions = question["solutions"].ToObject<string[]>();
+        correctSolutionIndex = (int)question["selectedSolution"];
 
         StartCoroutine(DownloadImage(imageUrl));
 
-        //int index = 0;
-        //foreach (Text solutionText in qaHandler.possible_solutions)
-        //{
-        //    foods[index].GetComponent<FoodScript>().setValue(possible_solutions[index]); // Set the value on the actual GameObject
-        //    solutionText.text = possible_solutions[index].ToString(); // Set the text of each option on the QAPanel
-        //    index++;
-        //}
+        int index = 0;
+        foreach (string solution in solutions)
+        {
+            foods[index].GetComponent<FoodScript>().setValue(solution);
+            foods[index].GetComponent<FoodScript>().valueIndex = index;
+
+            index++;
+        }
 
         if (placed)
         {
-            ShowFood(true);
+            ShowFood(false);
+            index = 0;
+            foreach (string solution in solutions)
+            {
+                foods[index].SetActive(true);
+                index++;
+            }
             PlaceFood();
         }
+    }
+
+    public void saveAttempt()
+    {
+        
     }
 }

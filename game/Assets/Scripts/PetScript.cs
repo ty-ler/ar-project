@@ -21,27 +21,28 @@ public class PetScript : MonoBehaviour
         if(other.CompareTag("Food"))
         {
             other.gameObject.SetActive(false);
-            float foodValue = other.gameObject.GetComponent<FoodScript>().value;
-            if (foodValue == petController.correctAnswer) {
+            int foodValueIndex = other.gameObject.GetComponent<FoodScript>().valueIndex;
+            Debug.Log("FOOD INDEX: " + foodValueIndex + ", CORRECT INDEX: " + petController.correctSolutionIndex);
+            if (foodValueIndex == petController.correctSolutionIndex) {
                 petController.correctAnswerCount++;
-                petController.totalQuestions.text = petController.correctAnswerCount + "/" + petController.totalAnswerCount;
-                if(petController.lastProblem)
+                petController.totalQuestions.text = petController.correctAnswerCount + "/" + petController.totalQuestionCount;
+                if (petController.lastProblem)
                 {
-                    winText.SetText("Game Finished!\nTime: " + petController.currentTimerText + "\nCorrect Answers:" + petController.totalQuestions.text);
+                    winText.SetText("Game Finished!\nTime: " + petController.currentTimerText + "\nCorrect Answers: " + petController.totalQuestions.text);
                     petController.timerGoing = false;
                     petController.timerText.gameObject.SetActive(false);
                     petController.wonGame = true;
                 }
                 else
                 {
-                   petController.nextQuestion();
-
+                    petController.nextQuestion();
                 }
             }
             else
             {
+                //petController.nextQuestion();
                 health = petController.OnDamage();
-                if(health == 0.0f)
+                if (health == 0.0f)
                 {
                     winText.SetText("Game Over!\nTime: " + petController.currentTimerText + "/nCorrect Answers:" + petController.totalQuestions);
                     petController.timerGoing = false;
