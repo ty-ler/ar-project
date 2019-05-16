@@ -6,6 +6,7 @@ import Controls from "../../Controls/Controls";
 import * as firebase from 'firebase/app';
 import "firebase/database";
 import ModalHeader from 'react-bootstrap/ModalHeader';
+import { Link } from "react-router-dom";
 
 const { SearchBar } = Search;
 
@@ -28,7 +29,7 @@ export default class ClassStudents extends Component {
     this.removeSelectedStudentFromClass = this.removeSelectedStudentFromClass.bind(this);
     this.addStudentsToClass = this.addStudentsToClass.bind(this);
 
-    this.studentsInClassTable = React.createRef();
+    this.studentsTable = React.createRef();
   }
 
   componentDidMount() {
@@ -44,6 +45,8 @@ export default class ClassStudents extends Component {
   }
 
   render() {
+    console.log(this.state.studentsInClass);
+
     const selectRow = {
       mode: "radio",
       style: { background: "#eee" },
@@ -58,6 +61,16 @@ export default class ClassStudents extends Component {
     };
 
     const studentColumns = [
+      {
+        dataField:"",
+        text: "Attempts",
+        sort: true,
+        formatter: (val, row, rowIndex) => {
+          const classId = this.props.classId;
+          const studentId = row.id;
+          return <Link to={`${classId}/${studentId}/attempts`}>Open</Link>
+        }
+      },
       {
         dataField: "firstName",
         text: "First Name",
@@ -75,7 +88,6 @@ export default class ClassStudents extends Component {
       }
     ];
 
-
     return (
       <div id="students-in-class">
         <Controls title="Students">
@@ -89,6 +101,7 @@ export default class ClassStudents extends Component {
           columns={ studentColumns }
           search
           sort
+          bootstrap4
         >
           {
             props => (
@@ -98,13 +111,14 @@ export default class ClassStudents extends Component {
                 <BootstrapTable
                   { ...props.baseProps }
                   selectRow={selectRow}
+                  ref={this.studentsTable}
                 />
               </div>
             )
           }
         </ToolkitProvider>
 
-        <Modal show={this.state.addStudent} onHide={this.handleHideAddStudentModal}>
+        <Modal show={this.state.addStudent} onHide={this.handleHideAddStudentModal} size="lg">
           <ModalHeader closeButton onHide={this.handleHideAddStudentModal}>
             <ModalTitle>Add a Student to {this.props.classData.name}</ModalTitle>
           </ModalHeader>
@@ -115,6 +129,7 @@ export default class ClassStudents extends Component {
               columns={ studentColumns }
               search
               sort
+              bootstrap4
             >
               {
                 props => (
@@ -154,20 +169,15 @@ export default class ClassStudents extends Component {
       const allStudents = this.props.studentsData;
       const studentIds = this.props.classData.students;
       var studentsInClass = []; 
-
-      console.log(studentIds);
-
       allStudents.map(student => {
         const studentId = student.id;
         if(studentIds.includes(studentId)) {
-          console.log("STUDENT:", student);
           studentsInClass.push(student);
         }
       });
 
 
       if(studentsInClass.length) {
-        console.log("STUDENTS IN CLASS:", studentsInClass)
         this.setState({
           studentsInClass: studentsInClass
         });
@@ -200,6 +210,7 @@ export default class ClassStudents extends Component {
       const students = studentsInClass.map(obj => obj.id);
       studentsInClassRef.set(students)
         .then(() => {
+          this.studentsTable.current.selectionContext.selected = [];
           this.setState({
             studentsInClass: studentsInClass,
             selectedStudentInClass: null
@@ -218,21 +229,43 @@ export default class ClassStudents extends Component {
 
     const selectedStudent = this.state.selectedStudents;
     const studentsInClass = this.state.studentsInClass;
-    console.log(studentsInClass);
     
     var students = studentsInClass.map(val => val.id);
-
+    var update = false;
     selectedStudent.map(selectedStudent => {
-      if(!students.includes(selectedStudent.id)) students.push(selectedStudent.id);
+      if(!students.includes(selectedStudent.id)) {
+        update = true;
+        students.push(selectedStudent.id);
+      }
     });
+    const studentsData = this.props.studentsData;
+    console.log("STUDENTS DATA: ", studentsData);
 
-    studentsInClassRef.set(students)
-    .then(() => {
+    if(update) {
+      studentsInClassRef.set(students)
+      .then(() => {
+        var updateStudents = students.map(studentId => {
+          const classData = {
+            name: this.props.classData.name,
+            id: classId,
+            teacherId: this.props.userId
+          };
+
+          return db.ref(`students/${studentId}/classes/${classId}/`).set(classData);
+        });
+  
+        Promise.all(updateStudents).then(() => {
+          this.setState({
+            addStudent: false,
+            selectedStudents: []
+          }, this.getStudentsInClass);
+        });
+      });
+    } else {
       this.setState({
-        addStudent: false,
-        selectedStudents: []
-      }, this.getStudentsInClass);
-    });
+        addStudent: false
+      });
+    }
   }
 
   handleHideAddStudentModal() {

@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: ceeb9e257b8247839031c3ec7cd1469e
 labels:
 - gvh
-- gvh_version-5.7.0
+- gvh_version-6.0.0
 timeCreated: 1480838400
 PluginImporter:
   serializedVersion: 1

@@ -21,7 +21,7 @@ class Class extends Component {
     this.state = {
       loading: true,
       userId: this.props.userId,
-      classId: this.props.match.params.id,
+      classId: this.props.match.params.classId,
       classData: {},
       addStudent: false,
       loadedStudents: false,
@@ -49,7 +49,10 @@ class Class extends Component {
         <h2>{this.state.classData.name}</h2>
         <hr/>
 
-        <ClassQuestions/>
+        <ClassQuestions
+          userId={this.state.userId}
+          classId={this.state.classId}
+        />
         
         <hr/>
 

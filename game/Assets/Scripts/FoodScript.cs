@@ -6,7 +6,8 @@ using TMPro;
 
 public class FoodScript : MonoBehaviour
 {
-    public float value { get; set; }
+    public string value { get; set; }
+    public int valueIndex { get; set; }
     public TextMeshPro foodText;
 
     void Update()
@@ -15,9 +16,9 @@ public class FoodScript : MonoBehaviour
         foodText.transform.Rotate(Vector3.up - new Vector3(0, 180, 0));
     }
 
-    public void setValue(float val)
+    public void setValue(string val)
     {
         value = val;
-        foodText.SetText(val.ToString());
+        foodText.SetText(val);
     }
 }

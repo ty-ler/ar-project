@@ -15,6 +15,8 @@ public class LoginHandler : MonoBehaviour
     public Button LoginButton;
     public Text LoginNotification;
     public Button backButton;
+    
+    public static string studentId;
 
     private FirebaseManager firebase;
 
@@ -26,6 +28,9 @@ public class LoginHandler : MonoBehaviour
         SignUpButton.onClick.AddListener(SignUp);
         backButton.onClick.AddListener(LoadMainMenu);
         firebase = new FirebaseManager();
+
+        EmailField.text = "test@test.com";
+        PasswordField.text = "test123";
     }
 
     private void ClearWarning(string arg0)
@@ -45,7 +50,8 @@ public class LoginHandler : MonoBehaviour
 
         if (firebase.auth.CurrentUser != null)
         {
-            SceneManager.LoadScene("pet");
+            studentId = firebase.auth.CurrentUser.UserId;
+            SceneManager.LoadScene("class_picker");
         } else
         {
             LoginNotification.text = "Email/Password incorrect. Try again.";

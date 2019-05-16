@@ -34,6 +34,7 @@ export default class Students extends Component {
     this.studentLastNameField = React.createRef();
     this.studentEmailField = React.createRef();
     this.studentPasswordField = React.createRef();
+    this.studentsTable = React.createRef();
   }
 
   componentDidMount() {
@@ -83,6 +84,7 @@ export default class Students extends Component {
             columns={ columns }
             search
             sort
+            bootstrap4
           >
             {
               props => (
@@ -92,6 +94,7 @@ export default class Students extends Component {
                   <BootstrapTable
                     { ...props.baseProps }
                     selectRow={selectRow}
+                    ref={this.studentsTable}
                   />
                 </div>
               )

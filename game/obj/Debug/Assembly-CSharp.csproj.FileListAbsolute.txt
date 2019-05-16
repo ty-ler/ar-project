@@ -1751,3 +1751,4 @@ C:/Users/Wei/Desktop/ar-project/game/obj/Debug/Assembly-CSharp.pdb
 /Users/Wei/Desktop/ar-project/game/obj/Debug/Assembly-CSharp.csproj.CopyComplete
 /Users/Wei/Desktop/ar-project/game/obj/Debug/Assembly-CSharp.dll
 /Users/Wei/Desktop/ar-project/game/obj/Debug/Assembly-CSharp.pdb
+G:\Projects\ar-project\game\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache

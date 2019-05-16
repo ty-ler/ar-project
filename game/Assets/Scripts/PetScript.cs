@@ -17,37 +17,39 @@ public class PetScript : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("HITTING: " + other.ToString() + ", Tag: " + other.tag);
-        if(other.CompareTag("Food"))
+        if (other.CompareTag("Food"))
         {
             other.gameObject.SetActive(false);
-            float foodValue = other.gameObject.GetComponent<FoodScript>().value;
-            if (foodValue == petController.correctAnswer) {
+            int foodValueIndex = other.gameObject.GetComponent<FoodScript>().valueIndex;
+            if (foodValueIndex == petController.correctSolutionIndex) {
                 petController.correctAnswerCount++;
-                petController.totalQuestions.text = petController.correctAnswerCount + "/" + petController.totalAnswerCount;
-                if(petController.lastProblem)
+                petController.questions[petController.currentProblem]["correct"] = true;
+                petController.totalQuestions.text = petController.correctAnswerCount + "/" + petController.totalQuestionCount;
+                if (petController.lastProblem)
                 {
-                    winText.SetText("Game Finished!\nTime: " + petController.currentTimerText + "\nCorrect Answers:" + petController.totalQuestions.text);
+                    winText.SetText("Game Finished!\nTime: " + petController.currentTimerText + "\nCorrect Answers: " + petController.totalQuestions.text);
                     petController.timerGoing = false;
                     petController.timerText.gameObject.SetActive(false);
                     petController.wonGame = true;
+
+                    petController.saveAttempt();
                 }
                 else
                 {
-                   petController.nextQuestion();
-
+                    petController.nextQuestion();
                 }
             }
             else
             {
-                health = petController.OnDamage();
-                if(health == 0.0f)
-                {
-                    winText.SetText("Game Over!\nTime: " + petController.currentTimerText + "/nCorrect Answers:" + petController.totalQuestions);
-                    petController.timerGoing = false;
-                    petController.timerText.gameObject.SetActive(false);
-                    petController.wonGame = true;
-                }
+                petController.nextQuestion();
+                //health = petController.OnDamage();
+                //if (health == 0.0f)
+                //{
+                //    winText.SetText("Game Over!\nTime: " + petController.currentTimerText + "/nCorrect Answers:" + petController.totalQuestions);
+                //    petController.timerGoing = false;
+                //    petController.timerText.gameObject.SetActive(false);
+                //    petController.wonGame = true;
+                //}
             }
                 
         }

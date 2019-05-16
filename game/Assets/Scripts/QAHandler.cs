@@ -7,8 +7,6 @@ public class QAHandler : MonoBehaviour
 {
     public GameObject panel;
     public Button button;
-    public Text questionText;
-    public Text[] possible_solutions;
 
     void Start()
     {

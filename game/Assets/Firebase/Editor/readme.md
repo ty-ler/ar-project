@@ -13,7 +13,6 @@ features on *iOS* and *Android*:
 | Firebase Dynamic Links             | FirebaseDynamicLinks.unitypackage |
 | Firebase Functions                 | FirebaseFunctions.unitypackage    |
 | Firebase Instance ID               | FirebaseInstanceId.unitypackage   |
-| Firebase Invites                   | FirebaseInvites.unitypackage      |
 | Firebase Messaging                 | FirebaseMessaging.unitypackage    |
 | Firebase Realtime Database         | FirebaseDatabase.unitypackage     |
 | Firebase Remote Config             | FirebaseRemoteConfig.unitypackage |
@@ -163,6 +162,48 @@ Support
 
 Release Notes
 -------------
+### 6.0.0
+  - Overview
+    - Released
+      [Crashlytics](https://firebase.google.com/docs/crashlytics/get-started?platform=unity)
+      as generally available (GA); added Task.ContinueWithOnMainThread(); fixed
+      issues in the Android Resolver, iOS Resolver, Auth, Database, Messaging,
+      and Remote Config; removed Firebase Invites, removed deprecated methods in
+      Firebase Remote Config, and deprecated a method in Firebase Analytics.
+  - Changes
+    - Updated [Firebase
+      iOS](https://firebase.google.com/support/release-notes/ios#6.0.0) and
+      [Firebase
+      Android](https://firebase.google.com/support/release-notes/ios#2019-05-07)
+      dependencies.
+    - Crashlytics (iOS/Android): [Crashlytics for
+      Unity](https://firebase.google.com/docs/crashlytics/get-started?platform=unity)
+      is now generally available (GA). Get the next evolution with BigQuery
+      exports, Jira integration, and more. To migrate from Fabric Crashlytics
+      for Unity to Firebase Crashlytics, follow the [migration
+      guide](https://firebase.google.com/docs/crashlytics/migrate-from-fabric).
+    - Added an extension method, `Task.ContinueWithOnMainThread()`, which
+      forces the continuation of asynchronous operations to occur in the Unity
+      main thread rather than in a background thread.
+    - General: Upgraded Play Services Resolver to from 1.2.104 to 1.2.109. For
+      more information see [this
+      document](https://github.com/googlesamples/unity-jar-resolver/blob/master/CHANGELOG.md#version-12109---may-6-2019).
+    - General (Android): Added support for Android SDK installed directly in
+      Unity 2019.
+    - General (iOS): Fixed issues generating projects without using Cocoapods.
+    - Database (iOS/Android): Fixed an issue where integrating the SDK greatly
+      increased the size of your app.
+    - Database: Fixed exception handling during listener events.
+    - Remote Config: Fixed an issue parsing boolean values.
+    - Auth (Desktop): Fixed a crash when attempting to call Game Center
+      authentication methods from the Unity editor.
+    - Messaging (iOS/Android): Fix an issue where Subscribe and Unsubscribe
+      never returned if the API was configured not to receive a registration
+      token.
+    - Invites: Removed Firebase Invites, as it is no longer supported.
+    - Remote Config: Removed functions using config namespaces.
+    - Analytics: Deprecated SetMinimumSessionDuration.
+
 ### 5.7.0
   - Overview
     - Fixed an issue with escape characters in Auth, deprecated functions

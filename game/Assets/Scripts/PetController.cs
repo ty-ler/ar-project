@@ -12,6 +12,9 @@ using Newtonsoft.Json.Linq;
 using Firebase;
 using Firebase.Unity.Editor;
 using Firebase.Database;
+using System.Threading.Tasks;
+using UnityEngine.Networking;
+using System.Linq;
 
 public class PetController : MonoBehaviour
 {
@@ -19,18 +22,22 @@ public class PetController : MonoBehaviour
     public GameObject placementIndicator;
     public GameObject petPlane;
     public GameObject[] foods;
+    public RawImage QuestionImage;
+    public GameObject QuestionPanel;
+    public Button QuestionButton;
     public TextMeshProUGUI timerText;
     public Image HealthBar;
     public Text HealthBarPercentage;
-    public Text totalQuestions;
-    public float correctAnswer;
+    public TextMeshProUGUI totalQuestions;
+    public int correctSolutionIndex;
     public bool timerGoing;
     public string currentTimerText;
     public bool wonGame;
     private float health;
     private float startHealth = 1f;
+    private float finishTime;
     public int correctAnswerCount = 0;
-    public int totalAnswerCount = 0;
+    public int totalQuestionCount = 0;
 
     private Vector3[] foodPositions;
     private APIHandler apiHandler;
@@ -41,41 +48,30 @@ public class PetController : MonoBehaviour
     private bool placed;
     Vector3 petPlanePos;
     private float startTime;
+    public static string classId;
+    public static string teacherId;
+    private FirebaseManager firebase;
+    private JObject classData;
+    private string[] solutions;
 
-    private JArray problems;
-    private int currentProblem = -1;
+    public JArray questions = new JArray();
+    public int currentProblem = -1;
     public bool lastProblem = false;
 
     void Start()
     {
-        //FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://ar-project-d52cb.firebaseio.com/");
-
-        //DatabaseReference reference = FirebaseDatabase.DefaultInstance.RootReference;
-
-        //reference.Child("test").GetValueAsync().ContinueWith(task =>
-        //{ 
-        //    if(task.IsFaulted)
-        //    {
-        //        Debug.Log("Error!!!!!");
-        //    } else if(task.IsCompleted)
-        //    {
-        //        DataSnapshot snapshot = task.Result;
-                
-        //        Debug.Log(snapshot.Value);
-        //    } else if(task.IsCanceled)
-        //    {
-        //        Debug.Log("Task cancelled!!!!!");
-        //    }
-        //});
-
+        QuestionButton.gameObject.SetActive(false);
+        firebase = new FirebaseManager();
+        foods = GameObject.FindGameObjectsWithTag("Food");
+        
         foodPositions = new Vector3[foods.Length];
 
         int index = 0;
-        foreach(GameObject food in foods)
+        foreach (GameObject food in foods)
         {
-            foodPositions[index] = food.transform.position;
-            index++;
+            foodPositions[index] = food.transform.position;   
         }
+
         qaHandler = FindObjectOfType<QAHandler>();
         placed = false;
         validPlacementPose = false;
@@ -90,32 +86,7 @@ public class PetController : MonoBehaviour
 
         timerText.SetText("Scanning...");
 
-        try
-        {
-            apiHandler = new APIHandler();
-            JObject obj = apiHandler.get("/problems", null);
-            Debug.Log(obj.ToString());
-        } catch (Exception e)
-        {
-            Debug.Log(e.ToString());
-        }
-
-        problems = new JArray();
-        JObject p1 = new JObject();
-        p1.Add("prompt", "What is the square root of 49?");
-        p1.Add("solution", 7);
-        p1.Add("possible_solutions", new JArray(new float[] { 7, 8, 6.5f }));
-
-        JObject p2 = new JObject();
-        p2.Add("prompt", "What is the square root of 9?");
-        p2.Add("solution", 3);
-        p2.Add("possible_solutions", new JArray(new float[] { 1, 2, 3 }));
-
-        problems.Add(p1);
-        problems.Add(p2);
-        totalAnswerCount = problems.Count;
-        totalQuestions.text = correctAnswerCount + "/" + totalAnswerCount;
-        nextQuestion();
+        loadClassData();
     }
 
     void Update()
@@ -125,31 +96,38 @@ public class PetController : MonoBehaviour
 
         if (validPlacementPose && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            if (!placed && !wonGame) {
+            if (!placed && !wonGame)
+            {
+                QuestionButton.gameObject.SetActive(true);
                 PlacePet();
-                ShowFood(true); 
+                int index = 0;
+                foreach (string solution in solutions)
+                {
+                    foods[index].SetActive(true);
+                    index++;
+                }
                 PlaceFood();
-                //correctAnswer = 7;
                 startTime = Time.time;
                 timerGoing = true;
                 timerText.SetText("");
             }
-            else if(placed && !wonGame)
+            else if (placed && !wonGame)
             {
                 pet.GetComponent<CatMoveTo>().StartMove(placementPose.position);
-            } 
+            }
         }
 
-        if(placed && timerGoing)
+        if (placed && timerGoing)
         {
             float t = Time.time - startTime;
+            finishTime = t;
             string minutes = ((int)t / 60).ToString();
             string seconds = (t % 60).ToString("f0");
 
             currentTimerText = minutes + ":" + seconds;
+
             timerText.SetText(currentTimerText);
         }
-
     }
 
     void UpdatePlacementIndicator()
@@ -223,11 +201,45 @@ public class PetController : MonoBehaviour
         }
     }
 
+    async void loadClassData()
+    {
+
+        classData = await firebase.get("teachers/" + teacherId + "/classes/" + classId);
+        setupQuestions();
+        nextQuestion();
+    }
+
+    void setupQuestions()
+    {
+
+        foreach (KeyValuePair<string, JToken> item in (JObject)classData["questions"])
+        {
+            JObject question = (JObject)item.Value;
+            question["correct"] = false;
+            questions.Add(question);
+        }
+
+        questions = new JArray(questions.OrderBy(obj => (int)obj["order"]));
+
+        totalQuestionCount = questions.Count;
+    }
+
+
+    IEnumerator DownloadImage(string MediaUrl)
+    {
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(MediaUrl);
+        yield return request.SendWebRequest();
+        if (request.isNetworkError || request.isHttpError)
+            Debug.Log(request.error);
+        else
+            QuestionImage.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+    }
+
     void PlacePet()
     {
         placed = true;
 
-        Vector3 placePosePos = new Vector3(placementPose.position.x, placementPose.position.y - 1f, placementPose.position.z);
+        Vector3 placePosePos = new Vector3(placementPose.position.x, placementPose.position.y - 1f, placementPose.position.z + .5f);
 
         petPlanePos = placePosePos + placementPose.forward;
 
@@ -248,35 +260,11 @@ public class PetController : MonoBehaviour
         int index = 0;
         foreach (GameObject food in foods)
         {
-            food.transform.position = foodPositions[index];
+            Debug.Log(food.transform.position.ToString() + ", " + foodPositions[index].ToString());
+            food.transform.position = new Vector3(0, 0.1f, 0);
             bool validPos = false;
             Vector3 randomPosition = new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
-            while (!validPos)
-            {
-                Collider[] collisions = Physics.OverlapSphere(randomPosition, .3f);
-                foreach(Collider col in collisions)
-                {
-                    if(col.CompareTag("Food"))
-                    {
-                        validPos = false;
-                    }
-                    else
-                    {
-                        validPos = true;
-                    }
-                }
-
-                if(!validPos)
-                {
-                    randomPosition = new Vector3(catPos.x + getRandomCoord(), catPos.y, catPos.z + getRandomCoord());
-                }
-            }
-
-            if(validPos)
-            {
-                food.transform.position += randomPosition;
-            }
-
+            food.transform.position += randomPosition;
             index++;
         }
     }
@@ -297,7 +285,7 @@ public class PetController : MonoBehaviour
 
     float getRandomCoord()
     {
-        return UnityEngine.Random.Range(-1f, 1f);
+        return UnityEngine.Random.Range(-.9f, .9f);
     }
     public float OnDamage() {
         health = health - 0.1f;
@@ -311,32 +299,53 @@ public class PetController : MonoBehaviour
         // If currentProblem = -1, the game has not initialized yet.
         currentProblem += 1;
 
-        if (currentProblem == problems.Count-1)
+        if (currentProblem == questions.Count-1)
         {
             lastProblem = true;
         }
+        JObject question = (JObject)questions[currentProblem];
 
-        JObject problem = (JObject)problems[currentProblem];
+        string imageUrl = (string)question["imageUrl"];
+        solutions = question["solutions"].ToObject<string[]>();
+        correctSolutionIndex = (int)question["selectedSolution"];
 
-        string prompt = (string)problem["prompt"];
-        float solution = (float)problem["solution"];
-        float[] possible_solutions = ((JArray)problem["possible_solutions"]).ToObject<float[]>();
-
-        qaHandler.questionText.text = prompt;
-        correctAnswer = solution; 
+        StartCoroutine(DownloadImage(imageUrl));
 
         int index = 0;
-        foreach (Text solutionText in qaHandler.possible_solutions)
+        foreach (string solution in solutions)
         {
-            foods[index].GetComponent<FoodScript>().setValue(possible_solutions[index]); // Set the value on the actual GameObject
-            solutionText.text = possible_solutions[index].ToString(); // Set the text of each option on the QAPanel
+            foods[index].GetComponent<FoodScript>().setValue(solution);
+            foods[index].GetComponent<FoodScript>().valueIndex = index;
+
             index++;
         }
 
         if (placed)
         {
-            ShowFood(true);
+            ShowFood(false);
+            index = 0;
+            foreach (string solution in solutions)
+            {
+                foods[index].SetActive(true);
+                index++;
+            }
             PlaceFood();
         }
+    }
+
+    public void saveAttempt()
+    {
+        string studentId = firebase.auth.CurrentUser.UserId;
+        string attemptId = Guid.NewGuid().ToString();
+
+        Debug.Log(questions);
+        JObject attemptData = new JObject();
+
+        attemptData["finishTime"] = finishTime;
+        attemptData["date"] = DateTime.UtcNow.ToString();
+        attemptData["grade"] = (correctAnswerCount / totalQuestionCount) * 100;
+        attemptData["questions"] = questions;
+
+        firebase.set("students/" + studentId + "/classes/" + classId + "/attempts/" + attemptId, attemptData.ToString());
     }
 }
