@@ -3,7 +3,7 @@ guid: e5c23a79a64d4d2c9539d09f7c9c71cd
 labels:
 - gvh
 - gvh_linuxlibname-FirebaseCppAuth
-- gvh_version-5.7.0
+- gvh_version-6.0.0
 timeCreated: 1480838400
 PluginImporter:
   serializedVersion: 1

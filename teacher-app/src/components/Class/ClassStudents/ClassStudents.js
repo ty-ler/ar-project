@@ -28,7 +28,7 @@ export default class ClassStudents extends Component {
     this.removeSelectedStudentFromClass = this.removeSelectedStudentFromClass.bind(this);
     this.addStudentsToClass = this.addStudentsToClass.bind(this);
 
-    this.studentsInClassTable = React.createRef();
+    this.studentsTable = React.createRef();
   }
 
   componentDidMount() {
@@ -98,6 +98,7 @@ export default class ClassStudents extends Component {
                 <BootstrapTable
                   { ...props.baseProps }
                   selectRow={selectRow}
+                  ref={this.studentsTable}
                 />
               </div>
             )
@@ -197,6 +198,7 @@ export default class ClassStudents extends Component {
       const students = studentsInClass.map(obj => obj.id);
       studentsInClassRef.set(students)
         .then(() => {
+          this.studentsTable.current.selectionContext.selected = [];
           this.setState({
             studentsInClass: studentsInClass,
             selectedStudentInClass: null
@@ -217,26 +219,41 @@ export default class ClassStudents extends Component {
     const studentsInClass = this.state.studentsInClass;
     
     var students = studentsInClass.map(val => val.id);
-
+    var update = false;
     selectedStudent.map(selectedStudent => {
-      if(!students.includes(selectedStudent.id)) students.push(selectedStudent.id);
+      if(!students.includes(selectedStudent.id)) {
+        update = true;
+        students.push(selectedStudent.id);
+      }
     });
+    const studentsData = this.props.studentsData;
+    console.log("STUDENTS DATA: ", studentsData);
 
-    studentsInClassRef.set(students)
-    .then(() => {
-      var updateStudents = students.map(studentId => {
-        return db.ref(`students/${studentId}/classes/${classId}/`).set({
-          test: "test"
+    if(update) {
+      studentsInClassRef.set(students)
+      .then(() => {
+        var updateStudents = students.map(studentId => {
+          const classData = {
+            name: this.props.classData.name,
+            id: classId,
+            teacherId: this.props.userId
+          };
+
+          return db.ref(`students/${studentId}/classes/${classId}/`).set(classData);
+        });
+  
+        Promise.all(updateStudents).then(() => {
+          this.setState({
+            addStudent: false,
+            selectedStudents: []
+          }, this.getStudentsInClass);
         });
       });
-
-      Promise.all(updateStudents).then(() => {
-        this.setState({
-          addStudent: false,
-          selectedStudents: []
-        }, this.getStudentsInClass);
+    } else {
+      this.setState({
+        addStudent: false
       });
-    });
+    }
   }
 
   handleHideAddStudentModal() {

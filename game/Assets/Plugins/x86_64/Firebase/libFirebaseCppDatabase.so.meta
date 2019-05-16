@@ -3,7 +3,7 @@ guid: fa7d94c67dc94df79a41199c6fe01346
 labels:
 - gvh
 - gvh_linuxlibname-FirebaseCppDatabase
-- gvh_version-5.7.0
+- gvh_version-6.0.0
 timeCreated: 1480838400
 PluginImporter:
   serializedVersion: 1

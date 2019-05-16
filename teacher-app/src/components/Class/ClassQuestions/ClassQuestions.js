@@ -382,7 +382,8 @@ export default class ClassQuestions extends Component {
         imageName: this.state.image.file.name,
         imageUrl: this.state.image.public_url,
         solutions: this.state.solutions,
-        selectedSolution: this.state.selectedSolution
+        selectedSolution: this.state.selectedSolution,
+        questionId: questionId
       };
   
       questionRef.child(questionId).set(questionData).then(this.handleHideAddQuestionModal);

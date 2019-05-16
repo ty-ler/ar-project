@@ -12,11 +12,13 @@ using Firebase.Auth;
 public class FirebaseManager
 {
     public FirebaseAuth auth;
-        
+    public FirebaseDatabase database;    
+
     public FirebaseManager()
     {
         FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://ar-project-d52cb.firebaseio.com/");
         auth = FirebaseAuth.DefaultInstance;
+        database = FirebaseDatabase.DefaultInstance;
     }
 
     public async Task<bool> SignUp(string email, string password)
@@ -66,6 +68,21 @@ public class FirebaseManager
                 newUser.DisplayName, newUser.UserId);
 
             return;
+        });
+    }
+
+    public async Task<JObject> get(string path)
+    {
+        return await database.GetReference(path).GetValueAsync().ContinueWith(task=> {
+            if(task.IsFaulted || task.IsCanceled)
+            {
+                throw new FirebaseException(-1, "Task is faulted or canceled: " + task.Result.ToString());
+            } else if(task.IsCompleted)
+            {
+                return JObject.FromObject(task.Result.Value);
+            }
+
+            return null;
         });
     }
 }
