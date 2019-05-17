@@ -22,11 +22,29 @@ public class PetScript : MonoBehaviour
             other.gameObject.SetActive(false);
             int foodValueIndex = other.gameObject.GetComponent<FoodScript>().valueIndex;
             petController.questions[petController.currentProblem]["studentSelection"] = foodValueIndex;
+            Debug.Log("SELECTED: " + foodValueIndex + ", CORRECT: " + petController.correctSolutionIndex);
             if (foodValueIndex == petController.correctSolutionIndex) {
                 petController.correctAnswerCount++;
                 petController.questions[petController.currentProblem]["correct"] = true;
-                petController.totalQuestions.text = petController.correctAnswerCount + "/" + petController.totalQuestionCount;
                 if (petController.lastProblem)
+                {
+                    petController.totalQuestions.text = petController.correctAnswerCount + "/" + petController.totalQuestionCount;
+                    winText.SetText("Game Finished!\nTime: " + petController.currentTimerText + "\nCorrect Answers: " + petController.totalQuestions.text);
+                    petController.timerGoing = false;
+                    petController.timerText.gameObject.SetActive(false);
+                    petController.wonGame = true;
+                    NotificationsManager.ScheduleNotifcation("Your pet is getting hungry!", "Tap to start answering questions to feed them!", 5, 1440); // 1440 mintues = 24 hours
+                    petController.saveAttempt();
+                } else
+                {
+                    Debug.Log("CORRECT, NEXT QUESTION");
+                    petController.nextQuestion();
+                }
+            }
+            else
+            {
+                Debug.Log("WRONG, NEXT QUESTION");
+                if(petController.lastProblem)
                 {
                     winText.SetText("Game Finished!\nTime: " + petController.currentTimerText + "\nCorrect Answers: " + petController.totalQuestions.text);
                     petController.timerGoing = false;
@@ -34,15 +52,10 @@ public class PetScript : MonoBehaviour
                     petController.wonGame = true;
                     NotificationsManager.ScheduleNotifcation("Your pet is getting hungry!", "Tap to start answering questions to feed them!", 5, 1440); // 1440 mintues = 24 hours
                     petController.saveAttempt();
-                }
-                else
+                } else
                 {
                     petController.nextQuestion();
                 }
-            }
-            else
-            {
-                petController.nextQuestion();
                 //health = petController.OnDamage();
                 //if (health == 0.0f)
                 //{
@@ -52,7 +65,7 @@ public class PetScript : MonoBehaviour
                 //    petController.wonGame = true;
                 //}
             }
-                
+            petController.totalQuestions.text = petController.correctAnswerCount + "/" + petController.totalQuestionCount;
         }
     }
 }
