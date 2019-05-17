@@ -96,7 +96,7 @@ export default class ClassQuestions extends Component {
         }
       }
     ];
-
+    console.log(this.state.questions);
     return (
       <div id="students-in-class">
         <Controls title="Questions">
@@ -105,7 +105,7 @@ export default class ClassQuestions extends Component {
         </Controls>
 
         <ToolkitProvider
-          keyField="id"
+          keyField="order"
           data={this.state.questions}
           columns={questionColumns}
           search
@@ -455,6 +455,7 @@ export default class ClassQuestions extends Component {
   }
 
   moveQuestionUp() {
+    console.log("CLICKING!!!");
     var questions = this.state.questions.map(val => val);
     var selectedIndex = this.questionsTable.current.selectionContext.selected[0];
     if(selectedIndex > 1) {
