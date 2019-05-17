@@ -21,6 +21,7 @@ public class PetScript : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             int foodValueIndex = other.gameObject.GetComponent<FoodScript>().valueIndex;
+            petController.questions[petController.currentProblem]["studentSelection"] = foodValueIndex;
             if (foodValueIndex == petController.correctSolutionIndex) {
                 petController.correctAnswerCount++;
                 petController.questions[petController.currentProblem]["correct"] = true;
@@ -31,7 +32,7 @@ public class PetScript : MonoBehaviour
                     petController.timerGoing = false;
                     petController.timerText.gameObject.SetActive(false);
                     petController.wonGame = true;
-
+                    NotificationsManager.ScheduleNotifcation("Your pet is getting hungry!", "Tap to start answering questions to feed them!", 5, 1); // 1440 mintues = 24 hours
                     petController.saveAttempt();
                 }
                 else

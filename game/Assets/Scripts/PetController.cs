@@ -36,8 +36,8 @@ public class PetController : MonoBehaviour
     private float health;
     private float startHealth = 1f;
     private float finishTime;
-    public int correctAnswerCount = 0;
-    public int totalQuestionCount = 0;
+    public float correctAnswerCount = 0;
+    public float totalQuestionCount = 0;
 
     private Vector3[] foodPositions;
     private APIHandler apiHandler;
@@ -124,7 +124,7 @@ public class PetController : MonoBehaviour
             string minutes = ((int)t / 60).ToString();
             string seconds = (t % 60).ToString("f0");
 
-            currentTimerText = minutes + ":" + seconds;
+            currentTimerText = minutes + ":" + seconds.PadLeft(2, '0');
 
             timerText.SetText(currentTimerText);
         }
@@ -134,26 +134,31 @@ public class PetController : MonoBehaviour
     {
         Vector3 placeIndPos = new Vector3(placementPose.position.x, placementPose.position.y + .001f, placementPose.position.z);
 
-        if(!placed)
+        if(!wonGame)
         {
-            if (validPlacementPose)
+            if (!placed)
             {
-                placementIndicator.SetActive(true);
-                placementIndicator.transform.SetPositionAndRotation(placeIndPos, placementPose.rotation);
+                if (validPlacementPose)
+                {
+                    placementIndicator.SetActive(true);
+                    placementIndicator.transform.SetPositionAndRotation(placeIndPos, placementPose.rotation);
+                }
+                else
+                {
+                    placementIndicator.SetActive(false);
+                }
             }
             else
             {
-                placementIndicator.SetActive(false);
-            }
-        } else
-        {
-            if(validPlacementPose)
-            {
-                placementIndicator.SetActive(true);
-                placementIndicator.transform.SetPositionAndRotation(placeIndPos, placementPose.rotation);
-            } else
-            {
-                placementIndicator.SetActive(false);
+                if (validPlacementPose)
+                {
+                    placementIndicator.SetActive(true);
+                    placementIndicator.transform.SetPositionAndRotation(placeIndPos, placementPose.rotation);
+                }
+                else
+                {
+                    placementIndicator.SetActive(false);
+                }
             }
         }
     }
@@ -342,8 +347,8 @@ public class PetController : MonoBehaviour
         JObject attemptData = new JObject();
 
         attemptData["finishTime"] = finishTime;
-        attemptData["date"] = DateTime.UtcNow.ToString();
-        attemptData["grade"] = (correctAnswerCount / totalQuestionCount) * 100;
+        attemptData["date"] = DateTime.UtcNow.ToString("s");
+        attemptData["grade"] = Math.Floor((correctAnswerCount / totalQuestionCount) * 100);
         attemptData["questions"] = questions;
 
         firebase.set("students/" + studentId + "/classes/" + classId + "/attempts/" + attemptId, attemptData.ToString());
