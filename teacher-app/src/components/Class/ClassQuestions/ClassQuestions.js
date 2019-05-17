@@ -16,6 +16,7 @@ import Loading from '../../Loading/Loading';
 
 import "./ClassQuestions.css";
 import SolutionListItem from './SolutionListItem';
+import { POINT_CONVERSION_COMPRESSED } from 'constants';
 const uuidv4 = require("uuid/v4");
 
 
@@ -104,7 +105,7 @@ export default class ClassQuestions extends Component {
         </Controls>
 
         <ToolkitProvider
-          keyField="order"
+          keyField="id"
           data={this.state.questions}
           columns={questionColumns}
           search
@@ -395,7 +396,7 @@ export default class ClassQuestions extends Component {
   handleRemoveQuestion() {
     var selectedIndex = this.questionsTable.current.selectionContext.selected[0];
     var questions = this.state.questions.map(val => val);
-    const questionImageName = questions[selectedIndex-1].imageName;
+
     questions.splice(selectedIndex-1, 1);
 
     const questionData = {};
@@ -410,19 +411,16 @@ export default class ClassQuestions extends Component {
     }); 
 
     const db = firebase.database();
-    const storage = firebase.storage();
     const userId = this.props.userId;
     const classId = this.props.classId;
     const questionsRef = db.ref(`teachers/${userId}/classes/${classId}/questions`);
-    const questionImageRef = storage.ref(`classes/${classId}/${questionImageName}`);
-    // questionImageRef.delete().then(() => {
+
     questionsRef.set(questionData).then(() => {
       this.questionsTable.current.selectionContext.selected = [];
       this.setState({
         questions: questions          
       });
     });
-    // })
   }
 
   handleSelectQuestion(question) {
