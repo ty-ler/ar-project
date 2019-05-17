@@ -32,7 +32,7 @@ public class PetScript : MonoBehaviour
                     petController.timerGoing = false;
                     petController.timerText.gameObject.SetActive(false);
                     petController.wonGame = true;
-                    NotificationsManager.ScheduleNotifcation("Your pet is getting hungry!", "Tap to start answering questions to feed them!", 5, 1); // 1440 mintues = 24 hours
+                    NotificationsManager.ScheduleNotifcation("Your pet is getting hungry!", "Tap to start answering questions to feed them!", 5, 1440); // 1440 mintues = 24 hours
                     petController.saveAttempt();
                 }
                 else
