@@ -216,11 +216,13 @@ export default class ClassStudents extends Component {
 
     const userId = this.props.userId;
     const classId = this.props.classId;
+    const selectedStudentInClass = this.state.selectedStudentInClass;
+    const studentId = selectedStudentInClass.id;
 
     const studentsInClassRef = db.ref(`teachers/${userId}/classes/${classId}/students`);
+    const studentClassRef = db.ref(`students/${studentId}/classes/${classId}`);
 
     var studentsInClass = this.state.studentsInClass.map(val=>val);
-    const selectedStudentInClass = this.state.selectedStudentInClass;
 
     const index = studentsInClass.findIndex(obj => obj.id === selectedStudentInClass.id);
     if(index !== -1) {
@@ -228,11 +230,13 @@ export default class ClassStudents extends Component {
       const students = studentsInClass.map(obj => obj.id);
       studentsInClassRef.set(students)
         .then(() => {
-          this.studentsTable.current.selectionContext.selected = [];
-          this.setState({
-            studentsInClass: studentsInClass,
-            selectedStudentInClass: null
-          }, () => this.getStudentsInClass);
+          studentClassRef.remove().then(() => {
+            this.studentsTable.current.selectionContext.selected = [];
+            this.setState({
+              studentsInClass: studentsInClass,
+              selectedStudentInClass: null
+            }, () => this.getStudentsInClass);
+          });
         });
     }
   }
