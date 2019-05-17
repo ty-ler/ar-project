@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import * as firebase from 'firebase/app';
 import "firebase/database";
 import "firebase/storage";
-import { storage } from 'firebase';
 import ModalHeader from 'react-bootstrap/ModalHeader';
 import { faWindowRestore } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core'

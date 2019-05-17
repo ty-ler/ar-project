@@ -120,7 +120,7 @@ export default class Classes extends Component{
 
 					classes.push(
 						<Link key={key} to={`/class/${key}`} className="class-item">
-							{c.name}
+							<strong>{c.name}</strong>
 						</Link>
 					);
 				});

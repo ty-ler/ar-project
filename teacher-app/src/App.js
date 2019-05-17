@@ -3,6 +3,7 @@ import {BrowserRouter as Router,Route, Switch, withRouter, Redirect} from 'react
 import AddQuestions from './components/AddQuestions';
 import SeeScores from './components/SeeScores';
 import Login from "./components/Login/Login";
+import "jquery/jquery.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-table/dist/bootstrap-table.min.css";
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
@@ -97,22 +98,39 @@ class App extends Component {
   }
 
   initializeUser(user) {
-    if(user) {
-      const db = firebase.database();
-      const userId = user.uid;
+    this.setState({
+      loading: true
+    }, () => {
+      if(user) {
+        const db = firebase.database();
+        const userId = user.uid;
+  
+        const teacherRef = db.ref(`teachers/${userId}`);
+        const studentRef = db.ref(`students/${userId}`);
+  
+        studentRef.once("value", snap => {
+          if(snap.exists()) {
+            this.setState({
+              loading: false
+            }, () => firebase.auth().signOut());
+          } else {
+            teacherRef.once("value", (snap) => {
+              if(!snap.exists()) {
+                teacherRef.set({
+                  display_name: "New Teacher",
+                  uid: userId,
+                  type: "teacher"
+                });
+              }
 
-      const userRef = db.ref(`teachers/${userId}`);
-      
-      userRef.once("value", (snap) => {
-        if(!snap.exists()) {
-          userRef.set({
-            display_name: "New Teacher",
-            uid: userId,
-            type: "teacher"
-          });
-        }
-      });
-    }
+              this.setState({
+                loading: false
+              });
+            });
+          }
+        });
+      }
+    });
   }
 }
 

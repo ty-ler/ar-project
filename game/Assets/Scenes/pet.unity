@@ -3033,7 +3033,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1207591160}
   - component: {fileID: 1207591159}
-  - component: {fileID: 1207591161}
   m_Layer: 0
   m_Name: PetController
   m_TagString: Untagged
@@ -3070,6 +3069,7 @@ MonoBehaviour:
   wonGame: 0
   correctAnswerCount: 0
   totalQuestionCount: 0
+  currentProblem: -1
   lastProblem: 0
 --- !u!4 &1207591160
 Transform:
@@ -3085,18 +3085,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1207591161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1207591158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 384763bb5d0d90b4c8fbc336b4458ece, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1249251907 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: 7bbb3a38742169a4abd045d20e527d9d,

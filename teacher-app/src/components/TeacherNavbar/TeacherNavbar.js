@@ -6,6 +6,7 @@ import 'firebase/auth';
 import NavbarToggle from 'react-bootstrap/NavbarToggle';
 import NavbarCollapse from 'react-bootstrap/NavbarCollapse';
 
+
 export default class TeacherNavbar extends Component{
 
 	constructor(props) {
@@ -32,8 +33,8 @@ export default class TeacherNavbar extends Component{
 				<NavbarBrand>
 					<NavbarLink to="/">MathAR Teacher</NavbarLink>
 				</NavbarBrand>
-				<NavbarToggle aria-controls="teacher-nav"/>
 				{this.renderNav()}
+				{this.renderLogout()}
 			</Navbar>
 		);
 	}
@@ -41,14 +42,17 @@ export default class TeacherNavbar extends Component{
 	renderNav() {
 		if(this.state.authenticated) {
 			return (
-				<NavbarCollapse id="teacher-nav">
-					<Nav className="mr-auto">
-						<NavbarLink to="/">Classes</NavbarLink>
-						<NavbarLink to="/students">Students</NavbarLink>
-					</Nav>
-					<Button variant="danger" size="md" onClick={this.logout}>Logout</Button>
-				</NavbarCollapse>
-			)
+				<Nav className="mr-auto">
+					<NavbarLink to="/">Classes</NavbarLink>
+					<NavbarLink to="/students">Students</NavbarLink>
+				</Nav>
+			);
+		}
+	}
+
+	renderLogout() {
+		if(this.state.authenticated) {
+			return <Button variant="danger" size="md" onClick={this.logout}>Logout</Button>
 		}
 	}
 
