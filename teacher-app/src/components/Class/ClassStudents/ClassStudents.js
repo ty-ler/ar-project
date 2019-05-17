@@ -60,6 +60,24 @@ export default class ClassStudents extends Component {
       onSelectAll: this.handleSelectAllStudents
     };
 
+    const addStudentColumns = [
+      {
+        dataField: "firstName",
+        text: "First Name",
+        sort: true
+      },
+      {
+        dataField: "lastName",
+        text: "Last Name",
+        sort: true
+      },
+      {
+        dataField: "email",
+        text: "Email",
+        sort: true
+      }
+    ];
+
     const studentColumns = [
       {
         dataField:"",
@@ -126,7 +144,7 @@ export default class ClassStudents extends Component {
             <ToolkitProvider
               keyField="id"
               data={ this.props.studentsData }
-              columns={ studentColumns }
+              columns={ addStudentColumns }
               search
               sort
               bootstrap4
