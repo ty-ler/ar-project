@@ -86,7 +86,7 @@ class Attempts extends Component {
       return <Loading/>
     }
 
-    if(!this.state.studentData.classes[this.state.classId].attempts) {
+    if(this.state.studentData.classes[this.state.classId].attempts === undefined || this.state.studentData.classes[this.state.classId].attempts === null) {
       return (
         <Container className="page-content">
           <Controls title={"Attempts"}/>
