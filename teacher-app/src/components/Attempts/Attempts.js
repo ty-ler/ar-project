@@ -86,6 +86,26 @@ class Attempts extends Component {
       return <Loading/>
     }
 
+    if(this.state.studentData.classes[this.state.classId].attempts === undefined || this.state.studentData.classes[this.state.classId].attempts === null) {
+      return (
+        <Container className="page-content">
+          <Controls title={"Attempts"}/>
+
+          <div className="question-group" style={{marginBottom: "1rem"}}>
+            <div>
+              <strong>Student:</strong> {this.state.studentData.firstName} {this.state.studentData.lastName}
+            </div>
+            <div>
+              <strong>Class:</strong> {this.state.studentData.classes[this.state.classId].name}
+            </div>
+          </div>
+          <div style={{textAlign: "center", marginTop: "3rem"}}>
+            <h4>No Attempts</h4>
+          </div>
+        </Container>
+      )
+    }
+    
     const studentAttempts = Object.keys(this.state.studentData.classes[this.state.classId].attempts).map(key => {
       this.state.studentData.classes[this.state.classId].attempts[key].id = key;
       return this.state.studentData.classes[this.state.classId].attempts[key];
