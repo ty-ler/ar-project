@@ -14,7 +14,6 @@ public class LoginHandler : MonoBehaviour
     public Button SignUpButton;
     public Button LoginButton;
     public Text LoginNotification;
-    public Button backButton;
     
     public static string studentId;
 
@@ -22,23 +21,28 @@ public class LoginHandler : MonoBehaviour
 
     void Start()
     {
+        // Add event listeners to all buttons and fields
         EmailField.onValueChanged.AddListener(ClearWarning);
         PasswordField.onValueChanged.AddListener(ClearWarning);
         LoginButton.onClick.AddListener(Login);
         SignUpButton.onClick.AddListener(SignUp);
-        backButton.onClick.AddListener(LoadMainMenu);
+
         firebase = new FirebaseManager();
 
-        EmailField.text = "test@test.com";
-        PasswordField.text = "test123";
+        if(firebase.auth.CurrentUser != null)
+        {
+            // Sign out of the current user if 
+            // Firebase preserved the sign in state
+            // from previous sign in.
+            Debug.Log("Signing out...");
+            firebase.auth.SignOut();
+        }
     }
 
     private void ClearWarning(string arg0)
     {
-        LoginNotification.text = " ";
-    }
-    void LoadMainMenu() {
-        SceneManager.LoadScene("main_menu");
+        // Clear login notifcation text
+        LoginNotification.text = "";
     }
 
     async void Login()
@@ -46,18 +50,25 @@ public class LoginHandler : MonoBehaviour
         string email = EmailField.text;
         string password = PasswordField.text;
 
+        // Sign in using email and password
         await firebase.SignIn(email, password);
 
+        // Check if sign in succeeded
         if (firebase.auth.CurrentUser != null)
         {
             studentId = firebase.auth.CurrentUser.UserId;
+
+            // Load class picker scene
             SceneManager.LoadScene("class_picker");
         } else
         {
+            // Notify failed login
             LoginNotification.text = "Email/Password incorrect. Try again.";
         }
     }
 
+
+    // Unused method
     async void SignUp()
     {
         string email = EmailField.text;
