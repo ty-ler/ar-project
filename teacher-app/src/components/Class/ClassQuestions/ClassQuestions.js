@@ -105,7 +105,7 @@ export default class ClassQuestions extends Component {
         </Controls>
 
         <ToolkitProvider
-          keyField="id"
+          keyField="order"
           data={this.state.questions}
           columns={questionColumns}
           search
