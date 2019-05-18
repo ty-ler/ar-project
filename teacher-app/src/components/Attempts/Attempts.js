@@ -105,7 +105,7 @@ class Attempts extends Component {
         </Container>
       )
     }
-
+    
     const studentAttempts = Object.keys(this.state.studentData.classes[this.state.classId].attempts).map(key => {
       this.state.studentData.classes[this.state.classId].attempts[key].id = key;
       return this.state.studentData.classes[this.state.classId].attempts[key];
