@@ -41,3 +41,10 @@ Open Unity and open the project from the folder `<project-dir>/game`.
 After all the assets have been imported, select `File > Build Settings`. Choose which platform you wish to build the game for and click `Switch Platform`. Configure the options for your respective build target. 
 
 Make sure your device is connected to your computer. Click `Build and Run`.  The game will build and then install to your phone.
+
+## Installation
+### Android
+After building from Unity, an APK file will be generated, usually in `<project-dir>/game/builds` (this folder does not exist in the repository and must be created). This APK file can be installed to a user's Android device through several means such as ADB.
+
+### iOS
+Distributing an iOS app may require an Apple Developer account. XCode can be used to build directly to an iOS device, but this may not be a viable method for many students who will require the app.
