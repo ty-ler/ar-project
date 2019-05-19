@@ -1,3 +1,5 @@
+# User Documentation
+
 ## Usage
 ### Teacher App
 #### Login
