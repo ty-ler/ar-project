@@ -1,4 +1,40 @@
 # Documentation
+## Usage
+### Teacher App
+#### Login
+![Login](https://i.imgur.com/Xapr9nh.png)
+
+#### Add a Student
+Go to the `Students` tab:
+
+![enter image description here](https://i.imgur.com/USsthCr.png)
+
+Click `New Student` and enter in a students information:
+
+![enter image description here](https://i.imgur.com/CVOB1ww.png)
+
+Click `Confirm`. Now the student has been added to the pool of all students:
+
+![enter image description here](https://i.imgur.com/rNS1itT.png)
+
+#### Add a Class
+Go to the `Classes` tab, click the `Add Class` button. Enter a class name:
+
+![enter image description here](https://i.imgur.com/bhHqPcq.png)
+
+Click `Confirm`. A new class named `Algebra 1` has been created under the currently logged in teacher:
+
+![enter image description here](https://i.imgur.com/Nxv833j.png)
+
+#### Add Students to Class
+Select a class from the `Classes` page. Click the `Add Student` button. Select a student you wish to be  added to a class:  
+
+![enter image description here](https://i.imgur.com/ACCy3VN.png)
+
+The selected student has now been added to the class:
+
+![enter image description here](https://i.imgur.com/Azlg12u.png)
+
 ## Development
 Start by cloning the project to your machine with:  `git clone https://github.com/ty-ler/ar-project.git`
 
@@ -28,12 +64,12 @@ Click `Authentication` on the left side of the page. Click `Set up sign-in metho
 
 Click the `Users` tab at the top of the page. Click `Add user`, and enter in the credentials for a teacher. Once you have added a teacher user, you are now ready to set up the teacher app.
 
-### Teacher App
+### Teacher Web App
 When you first clone the project, you must install all the node packages used. To do this, navigate to `<project-dir>/teacher-app` run the following command: `npm install --save`. This will fetch all the necessary dependencies.
 
 Once all of the dependencies are installed, you can start the teacher web app by running `npm start`. When you see the login screen, enter in the credentials you just created in Firebase.
 
-### Game App
+### Mobile AR App
 Open Unity and open the project from the folder `<project-dir>/game`. 
 
 After all the assets have been imported, select `File > Build Settings`. Choose which platform you wish to build the game for and click `Switch Platform`. Configure the options for your respective build target. 
