@@ -22,7 +22,7 @@ The file should look something like:
 
 Go back to the `Project Overview` page in Firebase and this time add a Unity app. Go through the steps again to register the app. Download both the `google-services.json` and `GoogleService-Info.plist` files and place them in the `<project-dir>/game/Assets` folder.
 
-Go back to Firebase and click on `Database` on the left side of the page. Scroll down to `Or choose Realtime Database` and create a database started in `test mode`. Now that you have created the database for the project,  you can add your first teacher user.
+Go back to Firebase and click on `Database` on the left side of the page. Scroll down to `Realtime Database` section and create a database started in `test mode` (Do **NOT** choose Cloud Firestore). Now that you have created the database for the project,  you can add your first teacher user.
 
 Click `Authentication` on the left side of the page. Click `Set up sign-in method`  and set up an `Email/Password` sign-in provider. Do **NOT** enable `Email link (passwordless sign-in)`.
 
@@ -39,8 +39,3 @@ Open Unity and open the project from the folder `<project-dir>/game`.
 After all the assets have been imported, select `File > Build Settings`. Choose which platform you wish to build the game for and click `Switch Platform`. Configure the options for your respective build target. 
 
 Make sure your device is connected to your computer. Click `Build and Run`.  The game will build and then install to your phone.
-
-
-
-
-
