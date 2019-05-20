@@ -92,12 +92,14 @@ class Class extends Component {
       const studentsData = snap.val();
       var students = [];
 
-      Object.keys(studentsData).map(key => {
-        var student = studentsData[key];
-        student.id = key;
-
-        students.push(student);
-      });
+      if(snap.exists()) {
+        Object.keys(studentsData).map(key => {
+          var student = studentsData[key];
+          student.id = key;
+  
+          students.push(student);
+        });  
+      }
 
       this.setState({
         studentsData: students,
