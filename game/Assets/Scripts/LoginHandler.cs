@@ -5,15 +5,16 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LoginHandler : MonoBehaviour
 {
   
-    public InputField EmailField; 
-    public InputField PasswordField;
+    public TMP_InputField EmailField; 
+    public TMP_InputField PasswordField;
     public Button SignUpButton;
     public Button LoginButton;
-    public Text LoginNotification;
+    public TextMeshProUGUI LoginNotification;
     
     public static string studentId;
 
@@ -66,7 +67,6 @@ public class LoginHandler : MonoBehaviour
             LoginNotification.text = "Email/Password incorrect. Try again.";
         }
     }
-
 
     // Unused method
     async void SignUp()
