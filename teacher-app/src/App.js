@@ -3,7 +3,7 @@ import {BrowserRouter as Router,Route, Switch, withRouter, Redirect} from 'react
 import AddQuestions from './components/AddQuestions';
 import SeeScores from './components/SeeScores';
 import Login from "./components/Login/Login";
-import "jquery/jquery.js";
+import "jquery/dist/jquery.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-table/dist/bootstrap-table.min.css";
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';

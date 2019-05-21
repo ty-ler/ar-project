@@ -8,11 +8,6 @@ library.add(faSpinner);
 
 export default class Loading extends Component{
 
-	constructor(props) {
-		super(props);
-
-	}
-
 	render(){
 
     if(this.props.size) {
