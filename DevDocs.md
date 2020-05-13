@@ -48,3 +48,31 @@ After building from Unity, an APK file will be generated, usually in `<project-d
 
 ### iOS
 Distributing an iOS app may require an Apple Developer account. XCode can be used to build directly to an iOS device, but this may not be a viable method for many students who will require the app.
+
+## Unity Development
+### Installation
+Visit https://unity3d.com/get-unity/download and download Unity Hub. Once opened, navigate to Installs and click Add in the top right. Select Unity 2019.03.0f6 or the latest version. Once installed, go to projects and click add. Select the project folder to add your project.
+
+### Unity Layout
+Unity operates by switching between "Scene" files. The left hand side is the *Hierarchy* which displays all of the objects in the scene. The center is the *Scene* view where you can click and drag assests into the scene. The right hand side is the *Inspector* which displays details on a selected object from the scene. The bottom left hand side displays the *Assets Folder* which contains all of the projects assests (another word for objects or related files). Lastly the bottom center shows the files selected from the assest folder.
+
+### Using Unity
+In order *to move* around in the scene, hold down right-click and move with the WASD keys. Scrolling the mouse wheel while holding down the right-click button will adjust the speed of your movement. 
+
+To *center your view* directly over an object, select the object from the Hierarchy and press F while your cursor is over the scene panel.
+
+Located underneath the File tab is a bar of useful tools used to maniuplate objects in a scene. The Hand Tool allows you to select objects and move the camera. The *Move Tool* allows you to drag a selected object along the X, Y, and Z axes. The *Rotate Tool* allows you to drag a selected object over the 3 axes. The *Scale Tool* allows the user to scale the object in the 3 axes. The *Rect Tool* allows you to scale multiple directions at the same time. The last tool combines the *Move, Rotate, and Scale tools*.
+
+In order to group objects together so be moved/scaled together, right click on the Hierarchy and select Create Empty to create a blank object. Click and drag those objects into that blank object to combine them. When the parent object is moved/scaled, the child objects will move/scale with it.
+
+### Running the project in Unity
+Unity plays in scenes so in order to test your changes, you must start off by running the **login scene** then proceed as intended.
+
+### Adding Accessories
+Accessories are classified as either Head, Body, or Leg accessories. Both of the AR and NonAR pet prefabs (or models) contain accessory objects in their hierarchy. Double click on the assest in the bottom center to open up the prefab's scene. New accessories need to be manually added to the correct accessory prefab on the model, scaled, and placed. Once the accessory is properly placed on the pet model, tag that new accessory with the appropriate tag. The tags are spearated based off of the classification of the accessory (Head, Body, Leg) and the pricing (1-3 getting more expensive the higher the number). 
+
+After the accessory has been tagged, it needs to be added to the Pet Script in the right hand Inspector. Adjust the size of the array to accomodate the new accessory, click and drag the object from the hierarchy to the inspector. The new accessory should now appear the in store.
+
+For leg accessories, you have to specify the number of different accessories and then the number of each individual accessory for each leg. (Ex. 4 boots for a cow count as 1 leg accessory but all 4 boots need to be added). Keep the accessories for the legs the same name. **AR pets and NonAR pets are separate prefabs therefore have separate lists and need to be added to both models for it to appear.** You can copy the contents of one model to add and scale it to the other for easier placement.
+
+
